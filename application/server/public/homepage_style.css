@@ -1,13 +1,16 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+    width: 100%
   }
 
-nav {
+.nav_bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 5px;
     background-color: #4CAF50;
     color: #fff;
     position: relative;
@@ -23,24 +26,22 @@ nav {
 
 .nav-links li {
     display: inline-block;
-    margin-left: 20px;
+    margin: 10px;
 }
 
 .nav-links li a {
     color: #fff;
     text-decoration: none;
+    padding: 10px;
 }
 
 .nav-links li a:hover {
-    text-decoration: underline;
-}
+    background-color: green;
 
-#signup {
-    margin-left: 650px;
 }
 
 #login {
-    margin-left: 30px;
+    margin-right: 50px;
 }
 
 .banner {
@@ -52,6 +53,10 @@ nav {
     color: #fff;
     position: relative;
     border: 1px solid black;
+    background-image: url('../public/#####.jpg'); /*put in the path of the image*/
+    background-size: cover;
+    background-position: center;
+    opacity: 0.7;
 }
 
 .banner h1 {
@@ -62,6 +67,7 @@ nav {
 .banner p {
     margin-left: 200px;
     padding-bottom: 200px;
+    font-size: 40px;
 }
 
 .feature {
@@ -86,12 +92,13 @@ nav {
     padding: 50px;
 }
 
-.price_imgs {
+.price_grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto;
     justify-items: center;
     align-items: center;
+    text-align: center;
     padding: 50px;
 }
 
@@ -102,6 +109,30 @@ nav {
     justify-items: center;
     align-items: center;
     padding: 50px;
+    border: 1px solid black;
 }
+
+.testimonial {
+    text-align: center;
+    padding: 50px;
+    border: 1px solid black;
+}
+
+#testimonial_grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    justify-items: center;
+    align-items; center;
+    padding: 50px;
+}
+
+.newsletter {
+    text-align: center;
+    padding: 50px;
+    border: 1px solid black;
+}
+
+
 
 

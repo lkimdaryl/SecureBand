@@ -8,12 +8,14 @@
 <body>
 	<div class="bg-image"></div>
 	<!-- Navigation Bar -->
-	<nav>
+	<nav class="nav_bar">
 		<ul class="nav-links">
 			<li><img class="logo" src="#"></li>
 			<li><a href="#">Home</a></li>
 			<li><a href="#">About Us</a></li>
 			<li><a href="#">Contact Us</a></li>
+		</ul>
+		<ul class="nav-links">
 			<li><a href="#" id="signup">Sign Up</a></li>
 			<li><a href="#" id="login">Login</a></li>
 		</ul>
@@ -22,7 +24,7 @@
 	<!-- Banner -->
 	<section class="banner">
 		<h1>SecureBand</h1>
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+		<p>The ultimate solution to keep your kids safe.</p>
 	</section>
 
 	<!-- Feature Section -->
@@ -47,9 +49,15 @@
 	<!-- Pricing Section -->
 	<section class="pricing">
 		<h2>Pricing</h2>
-		<div class="price_imgs">
-			<img src="#">
-			<img src="#">
+		<div class="price_grid">
+			<div>
+				<img src="#">
+				<p>$$$</p>
+			</div>
+			<div>
+				<img src="#">
+				<p>$$$</p>
+			</div>
 		</div>
 	</section>
 
@@ -58,25 +66,31 @@
 		<div>
 			<h2>About Us</h2>
 			<p>Description</p>
+			<button id="learn_more_bttn">Learn More</button>
 		</div>
 		<div>
 			<img id="about_us_img" src="#">
 		</div>
-
-
 	</section>
 
 	<!-- Testimonial Section -->
 	<section class="testimonial">
 		<h2>Testimonials</h2>
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-		<a href="#" class="review-btn">Send us a Review</a>
-	</section>
-
-	<!-- Blog Section -->
-	<section class="blog">
-		<h2>Blog</h2>
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+		<div id="testimonial_grid">
+			<div>
+				<img src="#">
+				<p>description</p>
+			</div>
+			<div>
+				<img src="#">
+				<p>description</p>
+			</div>
+			<div>
+				<img src="#">
+				<p>description</p>
+			</div>
+		</div>
+		<button class="button">Send us a Review</button>
 	</section>
 
 	<!-- Newsletter Section -->
@@ -84,18 +98,14 @@
 		<h2>Sign up for Newsletter</h2>
 		<form>
 			<input type="email" placeholder="Enter your email">
-			<button type="submit">Submit</button>
+			<button class="button" type="submit">Submit</button>
 		</form>
 	</section>
 
 	<!-- Footer -->
-	<footer>
-		<div class="logo">
-			<img src="logo.png">
-		</div>
+	<footer class="nav_bar">
 		<ul class="nav-links">
-			<li><a href="#">Home</a></li>
-			<li><a href="#">About</a></li>
+			<img src="logo.png">
 			<li><a href="#">Contact Us</a></li>
 		</ul>
 	</footer>
