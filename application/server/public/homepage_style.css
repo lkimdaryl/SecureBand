@@ -1,0 +1,107 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+  }
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    background-color: #4CAF50;
+    color: #fff;
+    position: relative;
+}
+
+.logo {
+    height: 50px;
+}
+
+.logo img {
+    height: 100%;
+}
+
+.nav-links li {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+.nav-links li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.nav-links li a:hover {
+    text-decoration: underline;
+}
+
+#signup {
+    margin-left: 650px;
+}
+
+#login {
+    margin-left: 30px;
+}
+
+.banner {
+    display: block;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    background-color: #333;
+    color: #fff;
+    position: relative;
+    border: 1px solid black;
+}
+
+.banner h1 {
+    font-size: 100px;
+    margin-left: 100px;
+}
+
+.banner p {
+    margin-left: 200px;
+    padding-bottom: 200px;
+}
+
+.feature {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    padding: 100px;
+    border: 1px solid black;
+}
+
+#feature_img {
+    justify-items: center;
+    align-items: center;
+}
+
+.pricing {
+    border: 1px solid black;
+}
+
+.pricing h2 {
+    text-align: center;
+    padding: 50px;
+}
+
+.price_imgs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    justify-items: center;
+    align-items: center;
+    padding: 50px;
+}
+
+.about_us {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    justify-items: center;
+    align-items: center;
+    padding: 50px;
+}
+
+
