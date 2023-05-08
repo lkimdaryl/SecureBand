@@ -115,12 +115,8 @@ body {
     justify-content: space-between;
     position: relative;
     padding: 0px;
-
 }
+
 .links li {
     display: inline-block;
-}
-
-.links li a {
-    text-decoration: none;
 }
