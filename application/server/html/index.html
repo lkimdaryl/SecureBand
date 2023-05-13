@@ -3,23 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <title> Login | SecureBand </title>
-  <link rel="stylesheet" href="./public/main.css">
+  <link rel="stylesheet" href="../public/main.css">
 </head>
 <body>
-<div class="container">
-    <h1>Secureband</h1>
-    <h2>Login Form</h2>
-	<form action="/login" method="POST">
-		<label for="username">Username:</label>
-		<input type="text" id="username" name="username" required><br><br>
+	<!-- Navigation Bar -->
+	<nav class="nav_bar">
+		<ul class="nav-links">
+			<li><img class="logo" src="#"></li>
+			<li><a href="/">Home</a></li>
+			<li><a href="#">About Us</a></li>
+			<li><a href="#">Contact Us</a></li>
+		</ul>
+		<ul class="nav-links">
+			<li><a href="/register" id="signup">Sign Up</a></li>
+		</ul>
+	</nav>
 
-		<label for="password">Password:</label>
-		<input type="password" id="password" name="password" required><br><br>
+	<div class="container">
+		<h1>SecureBand</h1>
+		<h2>Login Form</h2>
 
-		<input type="submit" value="Login">
-	</form>
-    <a href="/register"> No account? </a>
-</div>
-<script  src="./public/register.js"></script>
+		<form action="/login" method="POST">
+			<label for="username">Username:</label>
+			<input type="text" id="username" name="username" required><br><br>
+
+			<label for="password">Password:</label>
+			<input type="password" id="password" name="password" required><br><br>
+
+			<input type="submit" value="Login">
+		</form>
+
+
+		<ul class="links">
+			<li><a href="/register"> No account? </a></li>
+			<li><a href="#">Forgot Password</a></li>
+		</ul>
+	</div>
+	<script  src="./public/register.js"></script>
 </body>
 </html>
