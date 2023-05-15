@@ -72,6 +72,8 @@ TinyGsm modem(SerialAT);
 
 unsigned long last_gps = 0;
 
+bool gps_on = true;
+
 unsigned long gps_interval = 60 * 1000;
 
 
@@ -87,12 +89,19 @@ void callback(char *topic, byte *payload, unsigned int length) {
  Serial.println();
  Serial.println("-----------------------");
 
- if((char) payload[0] == '1'  ){
-  Serial.println("Switching GPS Modes");
-  gps_interval = 1000;
+ if((char) payload[0] == '0'  ){
+  Serial.println("GPS OFF");
+  gps_on = false;
  }
- else {
+ else if ((char) payload[0] == '1' ){
+  Serial.println("Default GPS Mode");
   gps_interval = 60 * 1000;
+  gps_on = true;
+ }
+ else if ((char) payload[0] == '2' ){
+  Serial.println("Rescue GPS Mode");
+  gps_interval = 1000;
+  gps_on = true;
  }
 }
 
@@ -217,7 +226,7 @@ void loop()
 {
     unsigned long curr_time = millis();
 
-    if(curr_time - last_gps > gps_interval){
+    if(gps_on && (curr_time - last_gps > gps_interval)){
       last_gps = curr_time;
 
       
