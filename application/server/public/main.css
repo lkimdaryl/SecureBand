@@ -120,3 +120,11 @@ body {
 .links li {
     display: inline-block;
 }
+
+#map {
+  height: 100%;
+}
+
+#map { 
+  width: 100%; height: 400px; 
+}

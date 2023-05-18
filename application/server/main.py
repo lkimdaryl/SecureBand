@@ -31,10 +31,16 @@ def get_html() -> HTMLResponse:
     with open("html/register.html") as html:
         return HTMLResponse(content=html.read())
 
-#Get login page
+#GET login page
 @app.get("/login", response_class=HTMLResponse)
 def get_html() -> HTMLResponse:
     with open("html/index.html") as html:
+        return HTMLResponse(content=html.read())
+    
+#GET maps page
+@app.get("/map", response_class=HTMLResponse)
+def get_html() -> HTMLResponse:
+    with open("html/map.html") as html: 
         return HTMLResponse(content=html.read())
 
 # Main function
