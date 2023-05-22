@@ -1,0 +1,5 @@
+application/server/__pycache__
+.DS_Store
+env
+application/database/mysql-db
+application/server/credentials.env
