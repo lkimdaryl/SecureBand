@@ -52,17 +52,16 @@ def get_html() -> HTMLResponse:
     with open("html/map.html") as html: 
         return HTMLResponse(content=html.read())
 
-@app.websocket("/ws")
-async def websocket_endpoint(websocket: websockets.WebSocket):
-    # MQTT handshake
-    connect.start_connection()
+# @app.websocket("/ws")
+# async def websocket_endpoint(websocket: websockets.WebSocket):
+#     # MQTT handshake    
+#     connect.start_connection()
 
-    await websocket.accept()
+#     await websocket.accept()
 
-    while True:
-        message = await websocket.receive_text()
-        await websocket.send_text(f"Echo: {message}")
-        connect.
+#     while True:
+#         message = await websocket.receive_text()
+#         await websocket.send_text(f"Echo: {message}")
 
 # Main function
 if __name__ == "__main__":
