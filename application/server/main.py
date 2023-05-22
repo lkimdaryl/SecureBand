@@ -10,6 +10,9 @@ from dotenv import load_dotenv
 import os 
 import json
 
+import websockets 
+import connect 
+
 # Launch FastAPI
 app = FastAPI()
 
@@ -48,6 +51,18 @@ def get_html() -> HTMLResponse:
 def get_html() -> HTMLResponse:
     with open("html/map.html") as html: 
         return HTMLResponse(content=html.read())
+
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: websockets.WebSocket):
+    # MQTT handshake
+    connect.start_connection()
+
+    await websocket.accept()
+
+    while True:
+        message = await websocket.receive_text()
+        await websocket.send_text(f"Echo: {message}")
+        connect.
 
 # Main function
 if __name__ == "__main__":
