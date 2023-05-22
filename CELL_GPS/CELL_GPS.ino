@@ -60,8 +60,9 @@ const char wifiSSID[] = "YourSSID";
 const char wifiPass[] = "YourWiFiPass";
 
 // MQTT details
-const char *broker = "rc2f8c80.ala.us-east-1.emqxsl.com";
-const int broker_port = 8883;
+//const char *broker = "rc2f8c80.ala.us-east-1.emqxsl.com";
+const char *broker = "broker.hivemq.com";
+const int broker_port = 1883;
 
 const char *mqtt_username = "SecureBand";
 const char *mqtt_password = "GPSTEST123";
