@@ -26,8 +26,8 @@ const char gprsPass[] = "";
 #include <PubSubClient.h>
 
 // WiFi
-const char *ssid = "SpectrumSetup-E0"; // Enter your WiFi name
-const char *password = "smarttrain175";  // Enter WiFi password
+const char *ssid = ""; // Enter your WiFi name
+const char *password = "";  // Enter WiFi password
 
 
 const char *mqtt_broker = "broker.hivemq.com";
