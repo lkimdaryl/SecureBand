@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact Us | SecureBand</title>
+    <link rel="stylesheet" href="../public/main.css">
+    <link rel="stylesheet" href="../public/contact_style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="nav_bar">
+        <ul class="nav-links">
+            <li><img class="logo" src="#"></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about_us">About Us</a></li>
+            <li><a href="/contact_us">Contact Us</a></li>
+        </ul>
+        <ul class="nav-links">
+            <li><a href="/register" id="signup">Sign Up</a></li>
+            <li><a href="/login" id="login">Login</a></li>
+        </ul>
+    </nav>
+
+    <!-- Contact Us Content -->
+    <div class="contact_container">
+        <div>
+            <ul>
+                <li class="sub_header">Address:</li>
+                <li class="sub_header_content">555 something street</li>
+                <li class="sub_header_content">San Diego, CA, 99999</li>
+                <br>
+                <li class="sub_header">Phone:</li>
+                <li class="sub_header_content">555-555-5555</li>
+                <br>
+                <li class="sub_header">email:</li>
+                <li class="sub_header_content">secureband@info.com</li>
+            </ul>
+        </div>
+
+        <div>
+            <h2>Send Message</h2>
+		    <form action="/send_message" method="POST">
+			<input type="text" id="full_name" name="full_name" placeholder="Full Name"><br><br>
+
+			<input type="text" id="email" name="email" placeholder="Email"><br><br>
+
+            <textarea id="message" name="message" rows="8" cols="50" placeholder="Enter Message"></textarea><br><br>
+
+			<input type="submit" value="Send">
+		</form>
+        </div>
+
+    </div>
+</body>
+</html>

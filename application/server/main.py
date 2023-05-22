@@ -39,13 +39,7 @@ def get_html() -> HTMLResponse:
 def get_html() -> HTMLResponse:
     with open("html/index.html") as html:
         return HTMLResponse(content=html.read())
-
-#GET about page
-@app.get("/about", response_class=HTMLResponse)
-def get_html() -> HTMLResponse:
-    with open("html/about.html") as html:
-        return HTMLResponse(content=html.read())
-    
+  
 #GET maps page
 @app.get("/map", response_class=HTMLResponse)
 def get_html() -> HTMLResponse:
@@ -62,6 +56,18 @@ def get_html() -> HTMLResponse:
 #     while True:
 #         message = await websocket.receive_text()
 #         await websocket.send_text(f"Echo: {message}")
+
+#Get about us page
+@app.get("/about_us", response_class=HTMLResponse)
+def get_html() -> HTMLResponse:
+    with open("html/about_us.html") as html:
+        return HTMLResponse(content=html.read())
+
+#Get contact us page
+@app.get("/contact_us", response_class=HTMLResponse)
+def get_html() -> HTMLResponse:
+    with open("html/contact_us.html") as html:
+        return HTMLResponse(content=html.read())
 
 # Main function
 if __name__ == "__main__":
