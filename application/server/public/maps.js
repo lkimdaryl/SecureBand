@@ -28,3 +28,5 @@ async function initMap(latitude,longitude) {
 const latitude = 40.689247; 
 const longitude = -74.044502;
 initMap(latitude,longitude);
+
+console.log("map loaded!");

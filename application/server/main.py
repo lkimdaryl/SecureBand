@@ -61,21 +61,49 @@ def get_html() -> HTMLResponse:
     
 #GET register page
 @app.get("/register", response_class=HTMLResponse)
-def get_html() -> HTMLResponse:
+def get_register(request:Request) -> HTMLResponse:
+  session = sessions.get_session(request)
+  if len(session) > 0 and session.get('logged_in'):
+    return RedirectResponse(url="/map", status_code=302)
+  else:
+    session_id = request.cookies.get("session_id")
+    template_data = {'request':request, 'session':session, 'session_id':session_id}
     with open("html/register.html") as html:
         return HTMLResponse(content=html.read())
 
 #GET login page
 @app.get("/login", response_class=HTMLResponse)
-def get_html() -> HTMLResponse:
-    with open("html/index.html") as html:
+def get_login(request:Request) -> HTMLResponse:
+  session = sessions.get_session(request)
+  if len(session) > 0 and session.get('logged_in'):
+    return RedirectResponse(url="/map", status_code=302)
+  else:
+    session_id = request.cookies.get("session_id")
+    template_data = {'request':request, 'session':session, 'session_id':session_id}
+    with open("html/login.html") as html:
         return HTMLResponse(content=html.read())
   
 #GET maps page
 @app.get("/map", response_class=HTMLResponse)
-def get_html() -> HTMLResponse:
-    with open("html/map.html") as html: 
+def get_map(request:Request) -> HTMLResponse:
+  session = sessions.get_session(request)
+  if len(session) > 0 and session.get('logged_in'):
+    session_id = request.cookies.get("session_id")
+    template_data = {'request':request, 'session':session, 'session_id':session_id}
+    with open("html/map.html") as html:
         return HTMLResponse(content=html.read())
+  else:
+    return RedirectResponse(url="/login", status_code=302)
+
+#GET info if email exists in database
+@app.get("/nonexistent_email/{email}")
+def nonexistent_email(email:str):
+  return json.dumps(db.nonexistent_email(email))
+
+#GET info if username exists in database
+@app.get("/nonexistent_username/{username}")
+def nonexistent_username(username:str):
+    return json.dumps(db.nonexistent_username(username))
 
 # @app.websocket("/ws")
 # async def websocket_endpoint(websocket: websockets.WebSocket):

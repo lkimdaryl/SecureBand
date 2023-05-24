@@ -98,6 +98,17 @@ def check_user_password(username:str, password:str) -> bool:
     return bcrypt.checkpw(password.encode('utf-8'), result[0].encode('utf-8'))
   return False
 
+# SELECT query to grab user id based on username
+def grab_user_userid(username: str):
+  db = mysql.connect(**db_config)
+  cursor = db.cursor()
+  query = 'select user_id from users where username=%s'
+  cursor.execute(query, (username,))
+  result = cursor.fetchone()
+  cursor.close()
+  db.close()
+  return result
+
 # Check if username already exists in the database
 def nonexistent_username(username: str)->bool:
   db = mysql.connect(**db_config)
