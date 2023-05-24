@@ -1,0 +1,50 @@
+#title{
+    text-align: left;
+    margin-left: 10%;
+    margin-top: 50px;
+}
+#kids {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    justify-items: center;
+    align-items: center;
+    padding: 50px;
+    border-top: solid gray;
+}
+
+.kids_profile{
+    background-color: #ABEBC6;
+    padding: 100px;
+    margin: 50px;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.kids_profile:hover {
+    background-color: #58D68D;
+}
+
+#member_bttn_container{
+    text-align: center;
+}
+
+#add_member_bttn {
+    width: 150px;
+    height: 50px;
+    padding: 10px;
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    margin-bottom: 80px;
+}
+
+#add_member_bttn:hover {
+    background-color: #229954 ;
+}
+
+
+
+
+
