@@ -12,10 +12,14 @@
     <nav class="nav_bar">
         <ul class="nav-links">
             <li><img class="logo" src="#"></li>
-            <li><a href="/">Home</a></li>
-            <li><a href="/about">About Us</a></li>
-            <li><a href="#">Contact Us</a></li>
+			<li><a href="/" id="hometab">Home</a></li>
+			<li><a href="/about_us" id="abouttab">About Us</a></li>
+			<li><a href="/contact_us" id="contacttab">Contact Us</a></li>
+			<li><a href="/map" id="dashtab" hidden>My Dashboard</a></li>
         </ul>
+        <ul class="nav-links">
+			<li><a href="#" id="logout_button">Logout</a></li>
+		</ul>
     </nav>
 
     <!-- Display Map -->
@@ -29,6 +33,8 @@
         ({key: "AIzaSyA1ukCz1ALwO0QI0coVuQsIJTBi-rZWfnk", v: "weekly"});
     </script>
     <script src="../public/maps.js"></script>
+    <script src="../public/logout.js"></script>
+    <script src="../public/session.js"></script>
 </body>
 
 </html>

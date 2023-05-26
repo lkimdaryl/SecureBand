@@ -19,7 +19,7 @@ app = FastAPI()
 
 # Use MySQL for storing session data
 from sessiondb import Sessions
-sessions = Sessions(db.db_config, secret_key=db.session_config['session_key'], expiry=1600)
+sessions = Sessions(db.db_config, secret_key=db.session_config['session_key'], expiry=1800)
 
 # Environment variables
 load_dotenv("credentials.env")
@@ -51,7 +51,7 @@ def authenticate_user(username:str, password:str) -> bool:
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 """
-GET Requests
+GET Requests (PAGES)
 """
 #GET homepage
 @app.get("/", response_class=HTMLResponse)
@@ -95,16 +95,6 @@ def get_map(request:Request) -> HTMLResponse:
   else:
     return RedirectResponse(url="/login", status_code=302)
 
-#GET info if email exists in database
-@app.get("/nonexistent_email/{email}")
-def nonexistent_email(email:str):
-  return json.dumps(db.nonexistent_email(email))
-
-#GET info if username exists in database
-@app.get("/nonexistent_username/{username}")
-def nonexistent_username(username:str):
-    return json.dumps(db.nonexistent_username(username))
-
 # @app.websocket("/ws")
 # async def websocket_endpoint(websocket: websockets.WebSocket):
 #     # MQTT handshake    
@@ -127,6 +117,28 @@ def get_html() -> HTMLResponse:
 def get_html() -> HTMLResponse:
     with open("html/contact_us.html") as html:
         return HTMLResponse(content=html.read())
+
+"""
+GET REQUESTS (AUTHENTICATION)
+"""
+#GET info if email exists in database
+@app.get("/nonexistent_email/{email}")
+def nonexistent_email(email:str):
+  return json.dumps(db.nonexistent_email(email))
+
+#GET info if username exists in database
+@app.get("/nonexistent_username/{username}")
+def nonexistent_username(username:str):
+    return json.dumps(db.nonexistent_username(username))
+
+#GET info on whether a session exists or not
+@app.get("/session_status")
+def get_session_status(request:Request):
+  session = sessions.get_session(request)
+  if len(session) > 0 and session.get('logged_in'):
+    return {'success': True}
+  else:
+    return {'success': False}
 
 """
 POST Requests
