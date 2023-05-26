@@ -46,18 +46,30 @@ body {
 
 .banner {
     display: block;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px;
-    background-color: #EAFAF1;
     position: relative;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    /*
-    background-image: url('../public/#####.jpg');
-    background-size: cover;
-    background-position: center;
-    opacity: 0.7;
-    */
+}
+
+#banner_img{
+    position: relative;
+    height: 90vh;
+}
+
+#banner_img img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.8;
+}
+
+#banner_text {
+    position: absolute;
+    transform: translate(0%, -130%);
+    z-index: 1;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 4);
 }
 
 .banner h1 {
@@ -66,8 +78,7 @@ body {
 }
 
 .banner p {
-    margin-left: 200px;
-    padding-bottom: 200px;
+    margin-left: 300px;
     font-size: 40px;
 }
 
@@ -82,8 +93,6 @@ body {
 }
 
 #img_feature{
-    background-color: #D5F5E3;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     margin: 40px;
     text-align: center;
     justify-content: center;
@@ -91,16 +100,28 @@ body {
     margin-top: 50px;
 }
 
-#img_feature img{
+.feature {
+    max-width: 90%;
+    margin: 0 auto;
+}
 
+#img_feature img{
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    margin-left: 15%;
+}
+
+#feature_list_container{
+    margin-left: 50px;
 }
 
 .feature div h2{
-    text-indent: 50px;
+    padding-left: 50px;
+    padding-top: 80px;
 }
 
 .features{
-    text-indent: 25px;
+    padding-left: 50px;
     list-style: none;
 }
 
@@ -128,6 +149,11 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
+.price_grid div img{
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
 .about_us {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -135,6 +161,19 @@ body {
     justify-items: center;
     align-items: center;
     padding: 50px;
+}
+
+.about_us div{
+    margin: 50px;
+}
+
+#about_us_img{
+    width: 100%;
+}
+
+.about_us a{
+    text-decoration: none;
+    color: black;
 }
 
 .testimonial {
