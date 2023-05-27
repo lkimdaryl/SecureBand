@@ -6,6 +6,7 @@ from fastapi.templating import Jinja2Templates    # Used for generating HTML fro
 from fastapi.staticfiles import StaticFiles       # Used for making static resources available to server
 import uvicorn                                    # Used for running the app directly through Python
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
+import dbutils as db
 from dotenv import load_dotenv
 import os 
 import json
@@ -16,11 +17,41 @@ import connect
 # Launch FastAPI
 app = FastAPI()
 
+# Use MySQL for storing session data
+from sessiondb import Sessions
+sessions = Sessions(db.db_config, secret_key=db.session_config['session_key'], expiry=1800)
+
+# Environment variables
+load_dotenv("credentials.env")
+db_host = os.environ['MYSQL_HOST']
+db_user = os.environ['MYSQL_USER']
+db_pass = os.environ['MYSQL_PASSWORD']
+db_name = os.environ['MYSQL_DATABASE']
+
 # Mount the static directory
 app.mount("/public", StaticFiles(directory="public"), name="public")
 
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+# Define a User class that matches the SQL schema we defined for our users
+class User(BaseModel):
+  first_name: str
+  last_name: str
+  username: str
+  password: str
+
+class Visitor(BaseModel):
+  username: str
+  password: str
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+# A function to authenticate users when trying to login or use protected routes
+def authenticate_user(username:str, password:str) -> bool:
+  return db.check_user_password(username, password)
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
 """
-GET Requests
+GET Requests (PAGES)
 """
 #GET homepage
 @app.get("/", response_class=HTMLResponse)
@@ -30,21 +61,39 @@ def get_html() -> HTMLResponse:
     
 #GET register page
 @app.get("/register", response_class=HTMLResponse)
-def get_html() -> HTMLResponse:
+def get_register(request:Request) -> HTMLResponse:
+  session = sessions.get_session(request)
+  if len(session) > 0 and session.get('logged_in'):
+    return RedirectResponse(url="/map", status_code=302)
+  else:
+    session_id = request.cookies.get("session_id")
+    template_data = {'request':request, 'session':session, 'session_id':session_id}
     with open("html/register.html") as html:
         return HTMLResponse(content=html.read())
 
 #GET login page
 @app.get("/login", response_class=HTMLResponse)
-def get_html() -> HTMLResponse:
-    with open("html/index.html") as html:
+def get_login(request:Request) -> HTMLResponse:
+  session = sessions.get_session(request)
+  if len(session) > 0 and session.get('logged_in'):
+    return RedirectResponse(url="/map", status_code=302)
+  else:
+    session_id = request.cookies.get("session_id")
+    template_data = {'request':request, 'session':session, 'session_id':session_id}
+    with open("html/login.html") as html:
         return HTMLResponse(content=html.read())
   
 #GET maps page
 @app.get("/map", response_class=HTMLResponse)
-def get_html() -> HTMLResponse:
-    with open("html/map.html") as html: 
+def get_map(request:Request) -> HTMLResponse:
+  session = sessions.get_session(request)
+  if len(session) > 0 and session.get('logged_in'):
+    session_id = request.cookies.get("session_id")
+    template_data = {'request':request, 'session':session, 'session_id':session_id}
+    with open("html/map.html") as html:
         return HTMLResponse(content=html.read())
+  else:
+    return RedirectResponse(url="/login", status_code=302)
 
 # @app.websocket("/ws")
 # async def websocket_endpoint(websocket: websockets.WebSocket):
@@ -68,6 +117,66 @@ def get_html() -> HTMLResponse:
 def get_html() -> HTMLResponse:
     with open("html/contact_us.html") as html:
         return HTMLResponse(content=html.read())
+
+"""
+GET REQUESTS (AUTHENTICATION)
+"""
+#GET info if email exists in database
+@app.get("/nonexistent_email/{email}")
+def nonexistent_email(email:str):
+  return json.dumps(db.nonexistent_email(email))
+
+#GET info if username exists in database
+@app.get("/nonexistent_username/{username}")
+def nonexistent_username(username:str):
+    return json.dumps(db.nonexistent_username(username))
+
+#GET info on whether a session exists or not
+@app.get("/session_status")
+def get_session_status(request:Request):
+  session = sessions.get_session(request)
+  if len(session) > 0 and session.get('logged_in'):
+    return {'success': True}
+  else:
+    return {'success': False}
+
+"""
+POST Requests
+"""
+# POST login
+@app.post('/login')
+def post_login(visitor:Visitor, request:Request, response:Response) -> dict:
+  username = visitor.username
+  password = visitor.password
+
+  # Invalidate previous session if logged in
+  session = sessions.get_session(request)
+  if len(session) > 0:
+    sessions.end_session(request, response)
+
+  # Authenticate the user
+  if authenticate_user(username, password):
+    user_id = db.grab_user_userid(username)[0]
+    session_data = {'username': username, 'user_id': user_id, 'logged_in': True}
+    session_id = sessions.create_session(response, session_data)
+    return {'message': 'Login successful', 'session_id': session_id}
+  else:
+    return {'message': 'Invalid username or password', 'session_id': 0}
+  
+# POST logout
+@app.post('/logout')
+def post_logout(request:Request, response:Response) -> dict:
+  sessions.end_session(request, response)
+  return {'message': 'Logout successful', 'session_id': 0}
+
+# POST register
+# Used to create a new user
+@app.post("/create")
+def post_user(user_data:dict) -> dict:
+  db.create_user(user_data['email'], user_data['first_name'], user_data['last_name'], user_data['username'], user_data['password'])
+  return {'success': True }
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 # Main function
 if __name__ == "__main__":
