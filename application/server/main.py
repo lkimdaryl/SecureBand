@@ -64,7 +64,7 @@ def get_html() -> HTMLResponse:
 def get_register(request:Request) -> HTMLResponse:
   session = sessions.get_session(request)
   if len(session) > 0 and session.get('logged_in'):
-    return RedirectResponse(url="/map", status_code=302)
+    return RedirectResponse(url="/dashboard", status_code=302)
   else:
     session_id = request.cookies.get("session_id")
     template_data = {'request':request, 'session':session, 'session_id':session_id}
@@ -76,7 +76,7 @@ def get_register(request:Request) -> HTMLResponse:
 def get_login(request:Request) -> HTMLResponse:
   session = sessions.get_session(request)
   if len(session) > 0 and session.get('logged_in'):
-    return RedirectResponse(url="/map", status_code=302)
+    return RedirectResponse(url="/dashboard", status_code=302)
   else:
     session_id = request.cookies.get("session_id")
     template_data = {'request':request, 'session':session, 'session_id':session_id}
@@ -84,13 +84,13 @@ def get_login(request:Request) -> HTMLResponse:
         return HTMLResponse(content=html.read())
   
 #GET maps page
-@app.get("/map", response_class=HTMLResponse)
+@app.get("/dashboard", response_class=HTMLResponse)
 def get_map(request:Request) -> HTMLResponse:
   session = sessions.get_session(request)
   if len(session) > 0 and session.get('logged_in'):
     session_id = request.cookies.get("session_id")
     template_data = {'request':request, 'session':session, 'session_id':session_id}
-    with open("html/map.html") as html:
+    with open("html/dashboard.html") as html:
         return HTMLResponse(content=html.read())
   else:
     return RedirectResponse(url="/login", status_code=302)
