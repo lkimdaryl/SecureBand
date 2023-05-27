@@ -10,15 +10,16 @@
 	<!-- Navigation Bar -->
 	<nav class="nav_bar">
 		<ul class="nav-links">
-			<li><img class="logo" src="#"></li>
-			<li><a href="/dashboard">Dashboard</a></li>
-            <li><a href="/profile">Profile</a></li>
-			<li><a href="/settings">Settings</a></li>
-			<li><a href="/contact_us">Contact Us</a></li>
-		</ul>
-		<ul class="nav-links">
-			<li><a href="/register" id="signup">Sign Up</a></li>
-			<li><a href="/login" id="login">Login</a></li>
+            <li><img class="logo" src="#"></li>
+			<li><a href="/" id="hometab">Home</a></li>
+			<li><a href="/about_us" id="abouttab">About Us</a></li>
+			<li><a href="/contact_us" id="contacttab">Contact Us</a></li>
+			<li><a href="/dashboard" id="dashtab" hidden>My Dashboard</a></li>
+        </ul>
+        <ul class="nav-links">
+			<li><a href="/register" id="signup" hidden>Sign Up</a></li>
+			<li><a href="/login" id="login" hidden>Login</a></li>
+			<li><a href="#" id="logout_button" hidden>Logout</a></li>
 		</ul>
 	</nav>
 
@@ -51,6 +52,8 @@
         ({key: "AIzaSyA1ukCz1ALwO0QI0coVuQsIJTBi-rZWfnk", v: "weekly"});
     </script>
 	<script src="../public/maps.js"></script>
+	<script src="../public/logout.js"></script>
+    <script src="../public/session.js"></script>
 
 	<!-- Footer -->
 	<footer class="nav_bar">

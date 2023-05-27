@@ -32,7 +32,8 @@ document.addEventListener("DOMContentLoaded", function () {
         server_request(action, data, method, (response) => {
           user_id = response.user_id;
           if (response.session_id != 0) {
-            this.location.replace("/map");
+            console.log("yo!");
+            this.location.replace("/dashboard");
           }
           else{
             alert("Invalid username and/or password. Try again.")
