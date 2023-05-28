@@ -1,10 +1,7 @@
-dashboard.css
-
 #title{
-    text-align: left;
     margin-left: 10%;
-    margin-top: 50px;
 }
+
 #kids {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -17,10 +14,11 @@ dashboard.css
 
 .kids_profile{
     background-color: #ABEBC6;
-    padding: 100px;
+    padding: 20px;
     margin: 50px;
     border-radius: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
 }
 
 .kids_profile:hover {
@@ -82,6 +80,10 @@ dashboard.css
   cursor: pointer;
 }
 
+#profile_pic{
+  border-radius: 50%;
+  width: 100px;
+}
 
 
 
