@@ -36,6 +36,18 @@ def create_user(email:str, first_name:str, last_name:str, username:str, password
   db.close()
   return cursor.lastrowid
 
+def create_child(first_name: str, last_name: str, parent_id: int) -> int:
+  db = mysql.connect(**db_config)
+  cursor = db.cursor()
+  query = 'INSERT INTO children (first_name, last_name, parent_id) VALUES (%s, %s, %s);'
+  values = (first_name, last_name, parent_id)
+  cursor.execute(query, values)
+  db.commit()
+  child_id = cursor.lastrowid
+  db.close()
+  return child_id
+
+
 # SELECT SQL query
 def select_users(username:str=None) -> list:
   db = mysql.connect(**db_config)

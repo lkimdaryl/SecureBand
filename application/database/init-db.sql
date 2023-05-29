@@ -21,8 +21,8 @@ create table if not exists children (
     child_id          int auto_increment primary key,
     first_name        varchar(64) not null,
     last_name         varchar(64) not null,
-    parent_id         int not null,
-    created_at        timestamp not null default current_timestamp
+    created_at        timestamp not null default current_timestamp,
+    FOREIGN KEY (parent_id) REFERENCES users(user_id)
 );
 
 create table if not exists locations (
