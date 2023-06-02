@@ -13,7 +13,7 @@
     border-top: solid gray;
 }
 
-.kids_profile{
+.kids_profile {
     background-color: #ABEBC6;
     padding: 100px;
     margin: 50px;
@@ -23,6 +23,24 @@
 
 .kids_profile:hover {
     background-color: #58D68D;
+}
+
+.kids_profile button {
+    width: 150px;
+    height: 50px;
+    padding: 10px;
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 20px;
+}
+
+.kids_profile button:hover {
+    background-color: #229954 ;
+}
+
+.kids_profile button.clicked {
+    background-color: red;
 }
 
 #member_bttn_container{
@@ -43,8 +61,5 @@
 #add_member_bttn:hover {
     background-color: #229954 ;
 }
-
-
-
 
 

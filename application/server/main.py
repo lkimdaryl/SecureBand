@@ -10,8 +10,8 @@ from dotenv import load_dotenv
 import os 
 import json
 
-import websockets 
 import connect 
+import asyncio
 
 # Launch FastAPI
 app = FastAPI()
@@ -46,17 +46,6 @@ def get_html() -> HTMLResponse:
     with open("html/map.html") as html: 
         return HTMLResponse(content=html.read())
 
-# @app.websocket("/ws")
-# async def websocket_endpoint(websocket: websockets.WebSocket):
-#     # MQTT handshake    
-#     connect.start_connection()
-
-#     await websocket.accept()
-
-#     while True:
-#         message = await websocket.receive_text()
-#         await websocket.send_text(f"Echo: {message}")
-
 #Get about us page
 @app.get("/about_us", response_class=HTMLResponse)
 def get_html() -> HTMLResponse:
@@ -69,6 +58,115 @@ def get_html() -> HTMLResponse:
     with open("html/contact_us.html") as html:
         return HTMLResponse(content=html.read())
 
+<<<<<<< Updated upstream
+=======
+"""
+GET REQUESTS (AUTHENTICATION)
+"""
+#GET info if email exists in database
+@app.get("/nonexistent_email/{email}")
+def nonexistent_email(email:str):
+  return json.dumps(db.nonexistent_email(email))
+
+#GET info if username exists in database
+@app.get("/nonexistent_username/{username}")
+def nonexistent_username(username:str):
+    return json.dumps(db.nonexistent_username(username))
+
+#GET info on whether a session exists or not
+@app.get("/session_status")
+def get_session_status(request:Request):
+  session = sessions.get_session(request)
+  if len(session) > 0 and session.get('logged_in'):
+    return {'success': True}
+  else:
+    return {'success': False}
+
+"""
+GET REQUESTS (LOCATION)
+"""
+#GET latitude and longitude data from SecureBand/GPS
+@app.get("/location")
+def get_location():
+    connect.rescue_mode(1)
+    connect.public_rescue(client)
+
+    latitude = connect.latest_coordinates.get("latitude", 0.0)
+    longitude = connect.latest_coordinates.get("longitude", 0.0)
+    
+    return {"latitude": latitude, "longitude": longitude}
+
+#GET latitude and longitude data from SecureBand/Rescue
+@app.get("/rescue")
+def get_location():
+    connect.rescue_mode(2)
+    connect.public_rescue(client)
+
+    latitude = connect.latest_coordinates.get("latitude", 0.0)
+    longitude = connect.latest_coordinates.get("longitude", 0.0)
+    
+    # print("lat:", latitude)
+    # print("lon:", longitude)
+    return {"latitude": latitude, "longitude": longitude}
+
+"""
+POST Requests
+"""
+# POST login
+@app.post('/login')
+def post_login(visitor:Visitor, request:Request, response:Response) -> dict:
+  username = visitor.username
+  password = visitor.password
+
+  # Invalidate previous session if logged in
+  session = sessions.get_session(request)
+  if len(session) > 0:
+    sessions.end_session(request, response)
+
+  # Authenticate the user
+  if authenticate_user(username, password):
+    user_id = db.grab_user_userid(username)[0]
+    session_data = {'username': username, 'user_id': user_id, 'logged_in': True}
+    session_id = sessions.create_session(response, session_data)
+    return {'message': 'Login successful', 'session_id': session_id}
+  else:
+    return {'message': 'Invalid username or password', 'session_id': 0}
+  
+# POST logout
+@app.post('/logout')
+def post_logout(request:Request, response:Response) -> dict:
+  sessions.end_session(request, response)
+  return {'message': 'Logout successful', 'session_id': 0}
+
+# POST register
+# Used to create a new user
+@app.post("/create")
+def post_user(user_data:dict) -> dict:
+  db.create_user(user_data['email'], user_data['first_name'], user_data['last_name'], user_data['username'], user_data['password'])
+  return {'success': True }
+
+# POST location
+# Used to post the location of a child
+# @app.post("/location")
+# async def post_location() -> dict:
+#     latitude = connect.latest_coordinates.get("latitude", 0.0)
+#     longitude = connect.latest_coordinates.get("longitude", 0.0)
+
+#     db.add_coordinates(1,latitude, longitude)
+    
+#     return {'success' : True}
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+>>>>>>> Stashed changes
 # Main function
 if __name__ == "__main__":
+    # asyncio.run(connect.start_connection())
+    loop = asyncio.get_event_loop()
+    client = loop.run_until_complete(connect.start_connection())
+    loop.close()
+
+    # loop = asyncio.get_event_loop()
+    # loop.run_until_complete(connect.start_connection())
+    # loop.close()
     uvicorn.run(app, host="0.0.0.0", port=6543)
