@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Settings | SecureBand </title>
+    <link rel="stylesheet" href="../public/main.css">
+	
+</head>
+<body>
+	<!-- Navigation Bar -->
+	<nav class="nav_bar">
+		<ul class="nav-links">
+			<li><img class="logo" src="#"></li>
+			<li><a href="/" id="hometab">Home</a></li>
+			<li><a href="/about_us" id="abouttab">About Us</a></li>
+			<li><a href="/contact_us" id="contacttab">Contact Us</a></li>
+			<li><a href="/dashboard" id="dashtab" hidden>My Dashboard</a></li>
+		</ul>
+		<ul class="nav-links">
+			<li><a href="/settings" id="settings" hidden>Settings</a></li>
+			<li><a href="/register" id="signup" hidden>Sign Up</a></li>
+			<li><a href="/login" id="login" hidden>Login</a></li>
+			<li><a href="#" id="logout_button" hidden>Logout</a></li>
+		</ul>
+	</nav>
+
+	<div class="container">
+		<h1 id="hello_header"></h1>
+
+		<h2 id="curr_username_header"></h2>
+		<form id="update_username_form">
+			<label for="username">New Username:</label>
+			<input type="text" id="username" name="username" required minlength="6" maxlength=16>
+			<button type="submit">Update</button>
+		</form>
+
+		<h2 id="curr_email_header"></h2>
+		<form id="update_email_form">
+			<label for="newEmail">New Email:</label>
+			<input type="email" id="email" name="newEmail" required>
+			<button type="submit">Update</button>
+		</form>
+
+		<h2>Change Password</h2>
+		<form id="update_password_form">
+			<label for="newPassword">New Password:</label>
+			<input type="password" id="newPassword" name="newPassword" minlength="8" maxlength="32" required>
+			<br>
+			<label for="confirmNewPassword">Confirm New Password:</label>
+			<input type="password" id="confirmNewPassword" name="confirmNewPassword" minlength="8" maxlength="32" required>
+			<button type="submit">Update</button>
+		</form>
+
+	</div>
+
+	 <!-- Modal -->
+	 <div id="confirmation-modal" class="modal">
+		<div class="modal-content">
+			<h2>Password Confirmation</h2>
+			<form id="confirmation-form" action="/confirm_password" method="POST">
+				<label for="confirm_password">Current Password:</label>
+				<input type="password" id="confirm_password" required>
+				<button id="submit-modal-button" type="submit">Update</button>
+			</form>
+			<br>
+			<button id="close-modal-button">Close</button>
+		</div>
+	</div>
+
+	<script src="../public/settings.js"></script>
+	<script src="../public/logout.js"></script>
+	<script src="../public/session.js"></script>
+
+</body>
+</html>

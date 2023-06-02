@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById('logout_button').hidden = false;
             document.getElementById('signup').hidden = true;
             document.getElementById('login').hidden = true;
+            document.getElementById('settings').hidden = false;
             //document.getElementById('abouttab').hidden = true;
             //document.getElementById('contacttab').hidden = true;
             //document.getElementById('hometab').hidden = true;
@@ -41,7 +42,9 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById('logout_button').hidden = true;
             document.getElementById('signup').hidden = false;
             document.getElementById('login').hidden = false;
+            document.getElementById('settings').hidden = true;
+            
         }
     });
-  
+
   });
