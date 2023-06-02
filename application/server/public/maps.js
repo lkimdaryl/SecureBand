@@ -9,6 +9,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // fetch coordinates every 60 seconds
   var intervial_id = setInterval(fetch_coordinates, 15000);
+
+  add_member.addEventListener('click', function (event) {
+    add_child();
+  });
 });
 
 // ----------------------------------------- DISPLAYING MAP -----------------------------------------
