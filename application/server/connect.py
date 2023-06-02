@@ -98,10 +98,10 @@ async def start_connection():
     client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
 
     # setting username and password
-    client.username_pw_set(username, password)
+    client.username_pw_set(username,password)
 
     # connecting to HiveMQ Cloud
-    client.connect(host=broker_address, port=port, keepalive=300)
+    client.connect(host=broker_address,port=port,keepalive=300)
 
     # callback functions
     client.on_subscribe = on_subscribe

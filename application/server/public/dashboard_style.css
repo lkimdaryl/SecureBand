@@ -25,6 +25,20 @@
     background-color: #58D68D;
 }
 
+.kids_profile button {
+    width: 150px;
+    height: 50px;
+    padding: 10px;
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 20px;
+}
+
+.kids_profile button:hover {
+    background-color: #229954;
+}
+
 #member_bttn_container{
     text-align: center;
 }
@@ -84,7 +98,4 @@
   border-radius: 50%;
   width: 200px;
 }
-
-
-
 

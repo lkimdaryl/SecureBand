@@ -10,10 +10,10 @@ import dbutils as db
 from dotenv import load_dotenv
 import os
 import json
-import connect
-import asyncio
 import websockets
 import connect
+import connect
+import asyncio
 
 # Launch FastAPI
 app = FastAPI()
@@ -62,11 +62,14 @@ def authenticate_user(username: str, password: str) -> bool:
 """
 GET Requests (PAGES)
 """
+
+
 # GET homepage
 @app.get("/", response_class=HTMLResponse)
 def get_html() -> HTMLResponse:
     with open("html/homepage.html") as html:
         return HTMLResponse(content=html.read())
+
 
 # GET register page
 @app.get("/register", response_class=HTMLResponse)
@@ -124,12 +127,34 @@ def get_dashboard(request: Request) -> HTMLResponse:
 #     while True:
 #         message = await websocket.receive_text()
 #         await websocket.send_text(f"Echo: {message}")
+def get_map(request:Request) -> HTMLResponse:
+  session = sessions.get_session(request)
+  if len(session) > 0 and session.get('logged_in'):
+    session_id = request.cookies.get("session_id")
+    template_data = {'request':request, 'session':session, 'session_id':session_id}
+    with open("html/dashboard.html") as html:
+        return HTMLResponse(content=html.read())
+  else:
+    return RedirectResponse(url="/login", status_code=302)
+
+#GET maps page
+@app.get("/settings", response_class=HTMLResponse)
+def get_settings(request:Request) -> HTMLResponse:
+  session = sessions.get_session(request)
+  if len(session) > 0 and session.get('logged_in'):
+    session_id = request.cookies.get("session_id")
+    template_data = {'request':request, 'session':session, 'session_id':session_id}
+    with open("html/settings.html") as html:
+        return HTMLResponse(content=html.read())
+  else:
+    return RedirectResponse(url="/login", status_code=302)
 
 # Get about us page
 @app.get("/about_us", response_class=HTMLResponse)
 def get_html() -> HTMLResponse:
     with open("html/about_us.html") as html:
         return HTMLResponse(content=html.read())
+
 
 # Get contact us page
 @app.get("/contact_us", response_class=HTMLResponse)
@@ -141,17 +166,20 @@ def get_html() -> HTMLResponse:
 """
 GET REQUESTS (AUTHENTICATION)
 """
+
+
 # GET info if email exists in database
 @app.get("/nonexistent_email/{email}")
 def nonexistent_email(email: str):
     return json.dumps(db.nonexistent_email(email))
+
 
 # GET info if username exists in database
 @app.get("/nonexistent_username/{username}")
 def nonexistent_username(username: str):
     return json.dumps(db.nonexistent_username(username))
 
-# GET info on whether a session exists or not
+#GET info on whether a session exists or not (WARNING: THIS IS ONLY IMPLEMENTED FOR THE SCOPE OF THE MVP! A REAL MODEL NEEDS TO SPECIFICALLY GET THE SESSION ID ASSOCIATED WITH A SPECIFIC SESSION!)
 @app.get("/session_status")
 def get_session_status(request: Request):
     session = sessions.get_session(request)
@@ -160,10 +188,11 @@ def get_session_status(request: Request):
     else:
         return {'success': False}
 
+
 """
 GET REQUESTS (LOCATION)
 """
-# GET latitude and longitude data from SecureBand/GPS
+#GET latitude and longitude data from SecureBand/GPS
 @app.get("/location")
 def get_location():
     connect.rescue_mode(1)
@@ -174,8 +203,7 @@ def get_location():
 
     return {"latitude": latitude, "longitude": longitude}
 
-
-# GET latitude and longitude data from SecureBand/Rescue
+#GET latitude and longitude data from SecureBand/Rescue
 @app.get("/rescue")
 def get_location():
     connect.rescue_mode(2)
@@ -188,9 +216,18 @@ def get_location():
     # print("lon:", longitude)
     return {"latitude": latitude, "longitude": longitude}
 
+# GET user data based on current session data
+@app.get("/session_data")
+def get_session_data(request:Request):
+  session = sessions.get_session(request)
+  # Return only the session_data, which contains the user data
+  return session
+
 """
 POST Requests
 """
+
+
 # POST login
 @app.post('/login')
 def post_login(visitor: Visitor, request: Request, response: Response) -> dict:
@@ -204,8 +241,10 @@ def post_login(visitor: Visitor, request: Request, response: Response) -> dict:
 
     # Authenticate the user
     if authenticate_user(username, password):
+        #store user data into session data
+        user_data = db.select_users(username)
         user_id = db.grab_user_userid(username)[0]
-        session_data = {'username': username, 'user_id': user_id, 'logged_in': True}
+        session_data = {'user_id': user_id, 'username': username, 'email': user_data[1], 'first_name': user_data[2], 'last_name':user_data[3], 'logged_in': True}
         session_id = sessions.create_session(response, session_data)
         return {'message': 'Login successful', 'session_id': session_id}
     else:
@@ -216,6 +255,7 @@ def post_login(visitor: Visitor, request: Request, response: Response) -> dict:
 def post_logout(request: Request, response: Response) -> dict:
     sessions.end_session(request, response)
     return {'message': 'Logout successful', 'session_id': 0}
+
 
 # POST register
 # Used to create a new user
@@ -228,8 +268,55 @@ def post_user(user_data: dict) -> dict:
 @app.post("/create_child")
 async def post_user(request: Request) -> dict:
     child_data = await request.json()
-    db.create_child(child_data['first_name'], child_data['last_name'], child_data['parent_id'])
+    child_id = db.create_child(child_data['first_name'], child_data['last_name'], child_data['parent_id'])
+    return {'success': True, 'child_id': child_id}
+
+@app.post("/edit_child")
+async def edit_child(request: Request) -> dict:
+    child_data = await request.json()
+    db.update_child(child_data['first_name'], child_data['last_name'], child_data['child_id'])
     return {'success': True}
+
+# POST location
+# Used to post the location of a child
+# @app.post("/location")
+# async def post_location() -> dict:
+#     latitude = connect.latest_coordinates.get("latitude", 0.0)
+#     longitude = connect.latest_coordinates.get("longitude", 0.0)
+
+#     db.add_coordinates(1,latitude, longitude)
+
+#     return {'success' : True}
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+# POST password verification
+@app.post("/confirm_password")
+def confirm_password(user_data:dict) -> bool:
+  return db.check_user_password(user_data["username"], user_data["password"])
+
+"""
+PUT Requests
+"""
+# Update session data
+@app.put('/update_session_data')
+def update_session_data(request:Request, session_data:dict):
+  return sessions.update_session(request, session_data)
+
+# Update username
+@app.put('/update_username')
+def update_username(user_data:dict) -> dict:
+  return {'success': db.update_username(user_data['user_id'], user_data['username'])}
+
+# Update email
+@app.put('/update_email')
+def update_email(user_data:dict) -> dict:
+  return {'success': db.update_email(user_data['user_id'], user_data['email'])}
+
+# Update password
+@app.put('/update_password')
+def update_password(user_data:dict) -> dict:
+  return {'success': db.update_password(user_data['user_id'], user_data['password'])}
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
