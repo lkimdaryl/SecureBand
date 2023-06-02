@@ -43,8 +43,8 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById('signup').hidden = false;
             document.getElementById('login').hidden = false;
             document.getElementById('settings').hidden = true;
-
+            
         }
     });
-
+  
   });

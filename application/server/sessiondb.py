@@ -73,6 +73,18 @@ class SessionStore:
     return True if cursor.rowcount == -1 else False
 
 
+  def update(self, session_id:str, session_data:dict) -> None:
+    db = mysql.connect(**self.db_config)
+    cursor = db.cursor()
+    query = "update sessions set session_data = %s where session_id = %s;"
+    cursor.execute(query, (json.dumps(session_data),session_id))
+    db.commit()
+
+    cursor.close()
+    db.close()
+    return True if cursor.rowcount == -1 else False
+
+
   def read(self, session_id:str) -> dict:
     if session_id is None:
       return {}

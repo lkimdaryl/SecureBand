@@ -100,8 +100,35 @@ def update_email(user_id:int, email:str) -> bool:
 # UPDATE user password ONLY based on user_id
 def update_password(user_id:int, password:str) -> bool:
   encrypted_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+# UPDATE user email ONLY based on user_id
+def update_username(user_id:int, username:str) -> bool:
   db = mysql.connect(**db_config)
   cursor = db.cursor()
+  query = "update users set username=%s where user_id=%s;"
+  values = (username,user_id)
+  cursor.execute(query,values)
+  db.commit()
+  db.close()
+  return True if cursor.rowcount == 1 else False
+
+# UPDATE user email ONLY based on user_id
+def update_email(user_id:int, email:str) -> bool:
+  db = mysql.connect(**db_config)
+  cursor = db.cursor()
+  query = "update users set email=%s where user_id=%s;"
+  values = (email,user_id)
+  cursor.execute(query,values)
+  db.commit()
+  db.close()
+  return True if cursor.rowcount == 1 else False
+
+# UPDATE user password ONLY based on user_id
+def update_password(user_id:int, password:str) -> bool:
+  encrypted_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+  db = mysql.connect(**db_config)
+  cursor = db.cursor()
+  query = "update users set password=%s where user_id=%s;"
+  values = (encrypted_password,user_id)
   query = "update users set password=%s where user_id=%s;"
   values = (encrypted_password,user_id)
   cursor.execute(query,values)

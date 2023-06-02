@@ -2,7 +2,7 @@
 import time
 import paho.mqtt.client as paho
 from paho import mqtt
-import asyncio
+import asyncio 
 
 
 # defined
@@ -38,16 +38,16 @@ def on_subscribe(client, userdata, mid, granted_qos, properties=None):
 def on_message(client, userdata, msg):
     # extracting the coordinates payload
     coordinates = msg.payload.decode("utf-8")
-
-    # splitting the coordinates
+    
+    # splitting the coordinates 
     split_coordinates = coordinates.split(',')
 
     # upon startup, coordinates are 0
-    if len(coordinates) == 1:
+    if len(coordinates) == 1: 
         latitude = 0.0
         longitude = 0.0
-    # extract latitude and longitude
-    else:
+    # extract latitude and longitude 
+    else: 
         latitude = float(split_coordinates[0].strip())
         longitude = float(split_coordinates[1].strip())
 
@@ -63,15 +63,15 @@ def on_message(client, userdata, msg):
 # define rescue
 rescue = 1
 
-def rescue_mode(mode):
+def rescue_mode(mode): 
     global rescue
     rescue = mode
     print("rescue mode:", rescue)
 
-def public_rescue(client):
+def public_rescue(client): 
     print("rescue variable:", rescue)
 
-    if rescue == 1:
+    if rescue == 1: 
         # publish to SecureBand/Rescue
         client.publish(topic_rescue, payload="1", qos=1)
 
@@ -113,7 +113,7 @@ async def start_connection():
     client.loop_start()
 
     # subscribe to SecureBand/GPS and SecureBand/Rescue
-    client.subscribe(topic_subscribe, qos=1)
+    client.subscribe(topic_subscribe, qos=1)  
 
     public_rescue(client)
 

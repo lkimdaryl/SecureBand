@@ -12,7 +12,7 @@
     border-top: solid gray;
 }
 
-.kids_profile{
+.kids_profile {
     background-color: #ABEBC6;
     padding: 20px;
     margin: 50px;
@@ -36,7 +36,11 @@
 }
 
 .kids_profile button:hover {
-    background-color: #229954;
+    background-color: #229954 ;
+}
+
+.kids_profile button.clicked {
+    background-color: red;
 }
 
 #member_bttn_container{
