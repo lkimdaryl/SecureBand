@@ -85,15 +85,22 @@ def get_login(request:Request) -> HTMLResponse:
   
 #GET maps page
 @app.get("/dashboard", response_class=HTMLResponse)
-def get_map(request:Request) -> HTMLResponse:
-  session = sessions.get_session(request)
-  if len(session) > 0 and session.get('logged_in'):
-    session_id = request.cookies.get("session_id")
-    template_data = {'request':request, 'session':session, 'session_id':session_id}
-    with open("html/dashboard.html") as html:
-        return HTMLResponse(content=html.read())
-  else:
-    return RedirectResponse(url="/login", status_code=302)
+def get_dashboard(request: Request) -> HTMLResponse:
+    session = sessions.get_session(request)
+    print(session)
+
+    if len(session) > 0 and session.get('logged_in'):
+        session_id = request.cookies.get("session_id")
+        user_id = session.get("user_id")
+
+        with open("html/dashboard.html") as html_file:
+            content = html_file.read()
+
+        response = HTMLResponse(content=content)
+        response.set_cookie(key="user_id", value=str(user_id))
+        return response
+    else:
+        return RedirectResponse(url="/login", status_code=302)
   
 #GET maps page
 @app.get("/settings", response_class=HTMLResponse)
