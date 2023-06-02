@@ -10,7 +10,8 @@ import dbutils as db
 from dotenv import load_dotenv
 import os
 import json
-
+import connect
+import asyncio
 import websockets
 import connect
 
@@ -61,14 +62,11 @@ def authenticate_user(username: str, password: str) -> bool:
 """
 GET Requests (PAGES)
 """
-
-
 # GET homepage
 @app.get("/", response_class=HTMLResponse)
 def get_html() -> HTMLResponse:
     with open("html/homepage.html") as html:
         return HTMLResponse(content=html.read())
-
 
 # GET register page
 @app.get("/register", response_class=HTMLResponse)
@@ -133,7 +131,6 @@ def get_html() -> HTMLResponse:
     with open("html/about_us.html") as html:
         return HTMLResponse(content=html.read())
 
-
 # Get contact us page
 @app.get("/contact_us", response_class=HTMLResponse)
 def get_html() -> HTMLResponse:
@@ -144,19 +141,15 @@ def get_html() -> HTMLResponse:
 """
 GET REQUESTS (AUTHENTICATION)
 """
-
-
 # GET info if email exists in database
 @app.get("/nonexistent_email/{email}")
 def nonexistent_email(email: str):
     return json.dumps(db.nonexistent_email(email))
 
-
 # GET info if username exists in database
 @app.get("/nonexistent_username/{username}")
 def nonexistent_username(username: str):
     return json.dumps(db.nonexistent_username(username))
-
 
 # GET info on whether a session exists or not
 @app.get("/session_status")
@@ -167,12 +160,37 @@ def get_session_status(request: Request):
     else:
         return {'success': False}
 
+"""
+GET REQUESTS (LOCATION)
+"""
+# GET latitude and longitude data from SecureBand/GPS
+@app.get("/location")
+def get_location():
+    connect.rescue_mode(1)
+    connect.public_rescue(client)
+
+    latitude = connect.latest_coordinates.get("latitude", 0.0)
+    longitude = connect.latest_coordinates.get("longitude", 0.0)
+
+    return {"latitude": latitude, "longitude": longitude}
+
+
+# GET latitude and longitude data from SecureBand/Rescue
+@app.get("/rescue")
+def get_location():
+    connect.rescue_mode(2)
+    connect.public_rescue(client)
+
+    latitude = connect.latest_coordinates.get("latitude", 0.0)
+    longitude = connect.latest_coordinates.get("longitude", 0.0)
+
+    # print("lat:", latitude)
+    # print("lon:", longitude)
+    return {"latitude": latitude, "longitude": longitude}
 
 """
 POST Requests
 """
-
-
 # POST login
 @app.post('/login')
 def post_login(visitor: Visitor, request: Request, response: Response) -> dict:
@@ -193,13 +211,11 @@ def post_login(visitor: Visitor, request: Request, response: Response) -> dict:
     else:
         return {'message': 'Invalid username or password', 'session_id': 0}
 
-
 # POST logout
 @app.post('/logout')
 def post_logout(request: Request, response: Response) -> dict:
     sessions.end_session(request, response)
     return {'message': 'Logout successful', 'session_id': 0}
-
 
 # POST register
 # Used to create a new user
@@ -219,4 +235,12 @@ async def post_user(request: Request) -> dict:
 
 # Main function
 if __name__ == "__main__":
+    # asyncio.run(connect.start_connection())
+    loop = asyncio.get_event_loop()
+    client = loop.run_until_complete(connect.start_connection())
+    loop.close()
+
+    # loop = asyncio.get_event_loop()
+    # loop.run_until_complete(connect.start_connection())
+    # loop.close()
     uvicorn.run(app, host="0.0.0.0", port=6543)
