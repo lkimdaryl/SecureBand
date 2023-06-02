@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>About Us | SecureBand</title>
 <html>
 <head>
     <title>About Us | SecureBand</title>
@@ -14,13 +11,16 @@
 	<nav class="nav_bar">
 		<ul class="nav-links">
 			<li><img class="logo" src="#"></li>
-			<li><a href="/">Home</a></li>
-			<li><a href="/about_us">About Us</a></li>
-			<li><a href="/contact_us">Contact Us</a></li>
+			<li><a href="/" id="hometab">Home</a></li>
+			<li><a href="/about_us" id="abouttab">About Us</a></li>
+			<li><a href="/contact_us" id="contacttab">Contact Us</a></li>
+			<li><a href="/dashboard" id="dashtab" hidden>My Dashboard</a></li>
 		</ul>
 		<ul class="nav-links">
-			<li><a href="/register" id="signup">Sign Up</a></li>
-			<li><a href="/login" id="login">Login</a></li>
+            <li><a href="/settings" id="settings" hidden>Settings</a></li>
+			<li><a href="/register" id="signup" hidden>Sign Up</a></li>
+			<li><a href="/login" id="login" hidden>Login</a></li>
+            <li><a href="#" id="logout_button" hidden>Logout</a></li>
 		</ul>
 	</nav>
 
@@ -88,5 +88,7 @@
             <li><a href="/contact_us">Contact Us</a></li>
         </ul>
     </footer>
+    <script  src="./public/logout.js"></script>
+    <script  src="./public/session.js"></script>
 </body>
 </html>

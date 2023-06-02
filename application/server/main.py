@@ -6,6 +6,7 @@ from fastapi.templating import Jinja2Templates    # Used for generating HTML fro
 from fastapi.staticfiles import StaticFiles       # Used for making static resources available to server
 import uvicorn                                    # Used for running the app directly through Python
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
+import dbutils as db
 from dotenv import load_dotenv
 import os 
 import json
@@ -16,11 +17,41 @@ import asyncio
 # Launch FastAPI
 app = FastAPI()
 
+# Use MySQL for storing session data
+from sessiondb import Sessions
+sessions = Sessions(db.db_config, secret_key=db.session_config['session_key'], expiry=1800)
+
+# Environment variables
+load_dotenv("credentials.env")
+db_host = os.environ['MYSQL_HOST']
+db_user = os.environ['MYSQL_USER']
+db_pass = os.environ['MYSQL_PASSWORD']
+db_name = os.environ['MYSQL_DATABASE']
+
 # Mount the static directory
 app.mount("/public", StaticFiles(directory="public"), name="public")
 
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+# Define a User class that matches the SQL schema we defined for our users
+class User(BaseModel):
+  first_name: str
+  last_name: str
+  username: str
+  password: str
+
+class Visitor(BaseModel):
+  username: str
+  password: str
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+# A function to authenticate users when trying to login or use protected routes
+def authenticate_user(username:str, password:str) -> bool:
+  return db.check_user_password(username, password)
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
 """
-GET Requests
+GET Requests (PAGES)
 """
 #GET homepage
 @app.get("/", response_class=HTMLResponse)
@@ -30,21 +61,51 @@ def get_html() -> HTMLResponse:
     
 #GET register page
 @app.get("/register", response_class=HTMLResponse)
-def get_html() -> HTMLResponse:
+def get_register(request:Request) -> HTMLResponse:
+  session = sessions.get_session(request)
+  if len(session) > 0 and session.get('logged_in'):
+    return RedirectResponse(url="/dashboard", status_code=302)
+  else:
+    session_id = request.cookies.get("session_id")
+    template_data = {'request':request, 'session':session, 'session_id':session_id}
     with open("html/register.html") as html:
         return HTMLResponse(content=html.read())
 
 #GET login page
 @app.get("/login", response_class=HTMLResponse)
-def get_html() -> HTMLResponse:
-    with open("html/index.html") as html:
+def get_login(request:Request) -> HTMLResponse:
+  session = sessions.get_session(request)
+  if len(session) > 0 and session.get('logged_in'):
+    return RedirectResponse(url="/dashboard", status_code=302)
+  else:
+    session_id = request.cookies.get("session_id")
+    template_data = {'request':request, 'session':session, 'session_id':session_id}
+    with open("html/login.html") as html:
         return HTMLResponse(content=html.read())
   
 #GET maps page
-@app.get("/map", response_class=HTMLResponse)
-def get_html() -> HTMLResponse:
-    with open("html/map.html") as html: 
+@app.get("/dashboard", response_class=HTMLResponse)
+def get_map(request:Request) -> HTMLResponse:
+  session = sessions.get_session(request)
+  if len(session) > 0 and session.get('logged_in'):
+    session_id = request.cookies.get("session_id")
+    template_data = {'request':request, 'session':session, 'session_id':session_id}
+    with open("html/dashboard.html") as html:
         return HTMLResponse(content=html.read())
+  else:
+    return RedirectResponse(url="/login", status_code=302)
+  
+#GET maps page
+@app.get("/settings", response_class=HTMLResponse)
+def get_settings(request:Request) -> HTMLResponse:
+  session = sessions.get_session(request)
+  if len(session) > 0 and session.get('logged_in'):
+    session_id = request.cookies.get("session_id")
+    template_data = {'request':request, 'session':session, 'session_id':session_id}
+    with open("html/settings.html") as html:
+        return HTMLResponse(content=html.read())
+  else:
+    return RedirectResponse(url="/login", status_code=302)
 
 #Get about us page
 @app.get("/about_us", response_class=HTMLResponse)
@@ -58,8 +119,6 @@ def get_html() -> HTMLResponse:
     with open("html/contact_us.html") as html:
         return HTMLResponse(content=html.read())
 
-<<<<<<< Updated upstream
-=======
 """
 GET REQUESTS (AUTHENTICATION)
 """
@@ -73,7 +132,7 @@ def nonexistent_email(email:str):
 def nonexistent_username(username:str):
     return json.dumps(db.nonexistent_username(username))
 
-#GET info on whether a session exists or not
+#GET info on whether a session exists or not (WARNING: THIS IS ONLY IMPLEMENTED FOR THE SCOPE OF THE MVP! A REAL MODEL NEEDS TO SPECIFICALLY GET THE SESSION ID ASSOCIATED WITH A SPECIFIC SESSION!)
 @app.get("/session_status")
 def get_session_status(request:Request):
   session = sessions.get_session(request)
@@ -109,6 +168,13 @@ def get_location():
     # print("lon:", longitude)
     return {"latitude": latitude, "longitude": longitude}
 
+# GET user data based on current session data
+@app.get("/session_data")
+def get_session_data(request:Request):
+  session = sessions.get_session(request)
+  # Return only the session_data, which contains the user data
+  return session
+   
 """
 POST Requests
 """
@@ -125,8 +191,10 @@ def post_login(visitor:Visitor, request:Request, response:Response) -> dict:
 
   # Authenticate the user
   if authenticate_user(username, password):
+    #store user data into session data
+    user_data = db.select_users(username)
     user_id = db.grab_user_userid(username)[0]
-    session_data = {'username': username, 'user_id': user_id, 'logged_in': True}
+    session_data = {'user_id': user_id, 'username': username, 'email': user_data[1], 'first_name': user_data[2], 'last_name':user_data[3], 'logged_in': True}
     session_id = sessions.create_session(response, session_data)
     return {'message': 'Login successful', 'session_id': session_id}
   else:
@@ -158,7 +226,36 @@ def post_user(user_data:dict) -> dict:
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
->>>>>>> Stashed changes
+# POST password verification
+@app.post("/confirm_password")
+def confirm_password(user_data:dict) -> bool:
+  return db.check_user_password(user_data["username"], user_data["password"])
+
+"""
+PUT Requests
+"""
+# Update session data
+@app.put('/update_session_data')
+def update_session_data(request:Request, session_data:dict):
+  return sessions.update_session(request, session_data)
+
+# Update username
+@app.put('/update_username')
+def update_username(user_data:dict) -> dict:
+  return {'success': db.update_username(user_data['user_id'], user_data['username'])}
+
+# Update email
+@app.put('/update_email')
+def update_email(user_data:dict) -> dict:
+  return {'success': db.update_email(user_data['user_id'], user_data['email'])}
+
+# Update password
+@app.put('/update_password')
+def update_password(user_data:dict) -> dict:
+  return {'success': db.update_password(user_data['user_id'], user_data['password'])}
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
 # Main function
 if __name__ == "__main__":
     # asyncio.run(connect.start_connection())

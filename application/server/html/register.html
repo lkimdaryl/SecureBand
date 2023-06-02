@@ -3,6 +3,7 @@
 <head>
 	<title>Register | SecureBand </title>
     <link rel="stylesheet" href="../public/main.css">
+	<script src="../public/register.js"></script>
 </head>
 <body>
 	<!-- Navigation Bar -->
@@ -14,6 +15,7 @@
 			<li><a href="/contact_us">Contact Us</a></li>
 		</ul>
 		<ul class="nav-links">
+			<li><a href="/settings" id="settings" hidden>Settings</a></li>
 			<li><a href="/register" id="signup">Sign Up</a></li>
 			<li><a href="/login" id="login">Login</a></li>
 		</ul>
@@ -22,25 +24,31 @@
 	<div class="container">
 		<h1>SecureBand</h1>
 		<h2>Registration Form</h2>
-		<form action="process-registration.php" method="POST">
+		<div id="invalid-entries-div">
+			<label id="invalid-entries-msg" hidden> Could not register account due to the following errors: </label>
+			<ul id="invalid-entries-list">
+			</ul>
+		</div>
+		<br>
+		<form id="register_form" action="/create" method="POST">
 
 			<label for="first_name">First Name:</label>
-			<input type="text" id="first_name" name="first_name"><br><br>
+			<input type="text" id="first_name" name="first_name" maxlength="16" required><br><br>
 
 			<label for="last_name">Last Name:</label>
-			<input type="text" id="last_name" name="last_name"><br><br>
-
-			<label for="username">Username:</label>
-			<input type="text" id="username" name="username" required><br><br>
-
-			<label for="password">Password:</label>
-			<input type="password" id="password" name="password" required><br><br>
-
-			<label for="confirm_password">Confirm Password:</label>
-			<input type="password" id="confirm_password" name="confirm_password" required><br><br>
+			<input type="text" id="last_name" name="last_name" maxlength="16" required><br><br>
 
 			<label for="email">Email:</label>
 			<input type="email" id="email" name="email" required><br><br>
+
+			<label for="username">Username:</label>
+			<input type="text" id="username" name="username" minlength="6" maxlength="16" required><br><br>
+
+			<label for="password">Password:</label>
+			<input type="password" id="password" name="password" minlength="8" maxlength="32" required><br><br>
+
+			<label for="confirm_password">Confirm Password:</label>
+			<input type="password" id="confirm_password" name="confirm_password" minlength="8" maxlength="32" required><br><br>
 
 			<input type="submit" value="Register">
 		</form>

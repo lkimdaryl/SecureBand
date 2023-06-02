@@ -32,7 +32,6 @@ create table if not exists locations (
     latitude        smallint not null,
     longitude       smallint not null,
     FOREIGN KEY (child_id) REFERENCES children(child_id)
-
 );
 
 create table if not exists sessions (

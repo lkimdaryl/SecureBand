@@ -86,12 +86,10 @@ async function initMap(latitude, longitude) {
   });
 }
 
-<<<<<<< Updated upstream
 // MODIFY for when decision is made on message protocol
 const latitude = 40.689247; 
 const longitude = -74.044502;
 initMap(latitude,longitude);
-=======
 // ----------------------------------------- FETCHING COORDINATES OF CHILD -----------------------------------------
 async function fetch_coordinates() {
   try {
@@ -189,4 +187,5 @@ function add_child(id) {
     // Add your rescue mode logic here
   });
 }
->>>>>>> Stashed changes
+
+console.log("map loaded!");

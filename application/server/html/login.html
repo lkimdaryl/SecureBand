@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title> Login | SecureBand </title>
   <link rel="stylesheet" href="../public/main.css">
+  <script src="../public/login.js"></script>
 </head>
 <body>
 	<!-- Navigation Bar -->
@@ -15,6 +16,7 @@
 			<li><a href="/contact_us">Contact Us</a></li>
 		</ul>
 		<ul class="nav-links">
+			<li><a href="/settings" id="settings" hidden>Settings</a></li>
 			<li><a href="/register" id="signup">Sign Up</a></li>
 			<li><a href="/login" id="login">Login</a></li>
 		</ul>
@@ -24,7 +26,7 @@
 		<h1>SecureBand</h1>
 		<h2>Login Form</h2>
 
-		<form action="/login" method="POST">
+		<form id="login_form" action="/login" method="POST">
 			<label for="username">Username:</label>
 			<input type="text" id="username" name="username" required><br><br>
 
@@ -40,6 +42,5 @@
 			<li><a href="#">Forgot Password</a></li>
 		</ul>
 	</div>
-	<script  src="./public/register.js"></script>
 </body>
 </html>
