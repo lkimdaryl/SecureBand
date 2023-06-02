@@ -22,14 +22,16 @@ create table if not exists children (
     first_name        varchar(64) not null,
     last_name         varchar(64) not null,
     parent_id         int not null,
-    created_at        timestamp not null default current_timestamp
+    created_at        timestamp not null default current_timestamp,
+    FOREIGN KEY (parent_id) REFERENCES users(user_id)
 );
 
 create table if not exists locations (
     location_id     int auto_increment primary key,
     child_id        int not null,
-    longitude       smallint not null,
     latitude        smallint not null,
+    longitude       smallint not null,
+    FOREIGN KEY (child_id) REFERENCES children(child_id)
 );
 
 create table if not exists sessions (

@@ -11,8 +11,8 @@ from dotenv import load_dotenv
 import os 
 import json
 
-import websockets 
 import connect 
+import asyncio
 
 # Launch FastAPI
 app = FastAPI()
@@ -107,17 +107,6 @@ def get_settings(request:Request) -> HTMLResponse:
   else:
     return RedirectResponse(url="/login", status_code=302)
 
-# @app.websocket("/ws")
-# async def websocket_endpoint(websocket: websockets.WebSocket):
-#     # MQTT handshake    
-#     connect.start_connection()
-
-#     await websocket.accept()
-
-#     while True:
-#         message = await websocket.receive_text()
-#         await websocket.send_text(f"Echo: {message}")
-
 #Get about us page
 @app.get("/about_us", response_class=HTMLResponse)
 def get_html() -> HTMLResponse:
@@ -151,6 +140,33 @@ def get_session_status(request:Request):
     return {'success': True}
   else:
     return {'success': False}
+
+"""
+GET REQUESTS (LOCATION)
+"""
+#GET latitude and longitude data from SecureBand/GPS
+@app.get("/location")
+def get_location():
+    connect.rescue_mode(1)
+    connect.public_rescue(client)
+
+    latitude = connect.latest_coordinates.get("latitude", 0.0)
+    longitude = connect.latest_coordinates.get("longitude", 0.0)
+    
+    return {"latitude": latitude, "longitude": longitude}
+
+#GET latitude and longitude data from SecureBand/Rescue
+@app.get("/rescue")
+def get_location():
+    connect.rescue_mode(2)
+    connect.public_rescue(client)
+
+    latitude = connect.latest_coordinates.get("latitude", 0.0)
+    longitude = connect.latest_coordinates.get("longitude", 0.0)
+    
+    # print("lat:", latitude)
+    # print("lon:", longitude)
+    return {"latitude": latitude, "longitude": longitude}
 
 # GET user data based on current session data
 @app.get("/session_data")
@@ -197,6 +213,19 @@ def post_user(user_data:dict) -> dict:
   db.create_user(user_data['email'], user_data['first_name'], user_data['last_name'], user_data['username'], user_data['password'])
   return {'success': True }
 
+# POST location
+# Used to post the location of a child
+# @app.post("/location")
+# async def post_location() -> dict:
+#     latitude = connect.latest_coordinates.get("latitude", 0.0)
+#     longitude = connect.latest_coordinates.get("longitude", 0.0)
+
+#     db.add_coordinates(1,latitude, longitude)
+    
+#     return {'success' : True}
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
 # POST password verification
 @app.post("/confirm_password")
 def confirm_password(user_data:dict) -> bool:
@@ -229,4 +258,12 @@ def update_password(user_data:dict) -> dict:
 
 # Main function
 if __name__ == "__main__":
+    # asyncio.run(connect.start_connection())
+    loop = asyncio.get_event_loop()
+    client = loop.run_until_complete(connect.start_connection())
+    loop.close()
+
+    # loop = asyncio.get_event_loop()
+    # loop.run_until_complete(connect.start_connection())
+    # loop.close()
     uvicorn.run(app, host="0.0.0.0", port=6543)

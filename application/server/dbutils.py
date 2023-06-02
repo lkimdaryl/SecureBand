@@ -154,3 +154,24 @@ def nonexistent_email(email: str)->bool:
   cursor.close()
   db.close()
   return True
+
+# Add child to database
+def add_child(first_name : str, last_name : str, parent_id : int) -> bool: 
+  db = mysql.connect(**db_config)
+  cursor = db.cursor()
+  query = 'INSERT INTO children (first_name, last_name, parent_id) values (%s, %s, %s);'
+  values = (first_name, last_name, parent_id)
+  cursor.execute(query, values)
+  db.commit()
+  db.close() 
+  
+# Add coordinates of a child to the database
+def add_coordinates(child_id : int, latitude : str, longitude : str) -> bool:
+  db = mysql.connect(**db_config)
+  cursor = db.cursor()
+  query = 'INSERT INTO locations (child_id, latitude, longitude) values (%s, %s, %s);'
+  values = (child_id, latitude, longitude)
+  cursor.execute(query, values)
+  db.commit()
+  db.close()
+  return cursor.lastrowid
