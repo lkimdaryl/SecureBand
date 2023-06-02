@@ -36,6 +36,18 @@ def create_user(email:str, first_name:str, last_name:str, username:str, password
   db.close()
   return cursor.lastrowid
 
+def create_child(first_name: str, last_name: str, parent_id: int) -> int:
+  db = mysql.connect(**db_config)
+  cursor = db.cursor()
+  query = 'INSERT INTO children (first_name, last_name, parent_id) VALUES (%s, %s, %s);'
+  values = (first_name, last_name, parent_id)
+  cursor.execute(query, values)
+  db.commit()
+  child_id = cursor.lastrowid
+  db.close()
+  return child_id
+
+
 # SELECT SQL query
 def select_users(username:str=None) -> list:
   db = mysql.connect(**db_config)
@@ -88,13 +100,53 @@ def update_email(user_id:int, email:str) -> bool:
 # UPDATE user password ONLY based on user_id
 def update_password(user_id:int, password:str) -> bool:
   encrypted_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+# UPDATE user email ONLY based on user_id
+def update_username(user_id:int, username:str) -> bool:
   db = mysql.connect(**db_config)
   cursor = db.cursor()
+  query = "update users set username=%s where user_id=%s;"
+  values = (username,user_id)
+  cursor.execute(query,values)
+  db.commit()
+  db.close()
+  return True if cursor.rowcount == 1 else False
+
+# UPDATE user email ONLY based on user_id
+def update_email(user_id:int, email:str) -> bool:
+  db = mysql.connect(**db_config)
+  cursor = db.cursor()
+  query = "update users set email=%s where user_id=%s;"
+  values = (email,user_id)
+  cursor.execute(query,values)
+  db.commit()
+  db.close()
+  return True if cursor.rowcount == 1 else False
+
+# UPDATE user password ONLY based on user_id
+def update_password(user_id:int, password:str) -> bool:
+  encrypted_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+  db = mysql.connect(**db_config)
+  cursor = db.cursor()
+  query = "update users set password=%s where user_id=%s;"
+  values = (encrypted_password,user_id)
   query = "update users set password=%s where user_id=%s;"
   values = (encrypted_password,user_id)
   cursor.execute(query,values)
   db.commit()
   db.close()
+  return True if cursor.rowcount == 1 else False
+
+def update_child(first_name: str, last_name: str, child_id: int) -> bool:
+  db = mysql.connect(**db_config)
+  cursor = db.cursor()
+
+  query = "UPDATE children SET first_name=%s, last_name=%s WHERE child_id=%s;"
+  values = (first_name, last_name, child_id)
+
+  cursor.execute(query, values)
+  db.commit()
+  db.close()
+
   return True if cursor.rowcount == 1 else False
 
 # DELETE SQL query
@@ -155,18 +207,8 @@ def nonexistent_email(email: str)->bool:
   db.close()
   return True
 
-# Add child to database
-def add_child(first_name : str, last_name : str, parent_id : int) -> bool: 
-  db = mysql.connect(**db_config)
-  cursor = db.cursor()
-  query = 'INSERT INTO children (first_name, last_name, parent_id) values (%s, %s, %s);'
-  values = (first_name, last_name, parent_id)
-  cursor.execute(query, values)
-  db.commit()
-  db.close() 
-  
 # Add coordinates of a child to the database
-def add_coordinates(child_id : int, latitude : str, longitude : str) -> bool:
+def add_coordinates(child_id: int, latitude: str, longitude: str) -> bool:
   db = mysql.connect(**db_config)
   cursor = db.cursor()
   query = 'INSERT INTO locations (child_id, latitude, longitude) values (%s, %s, %s);'

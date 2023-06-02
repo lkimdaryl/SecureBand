@@ -28,11 +28,11 @@ class Sessions:
   def get_session(self, request:Request) -> dict:
     session_id = request.cookies.get("session_id")
     return self.db.read(session_id)
-  
+
   def update_session(self, request:Request, session_data:dict) -> dict:
     session_id = request.cookies.get("session_id")
     return self.db.update(session_id, session_data)
-  
+
   def end_session(self, request:Request, response:Response) -> None:
     session_id = request.cookies.get("session_id")
     self.db.delete(session_id)
@@ -60,6 +60,18 @@ class SessionStore:
 
     cursor.close()
     db.close()
+
+  def update(self, session_id:str, session_data:dict) -> None:
+    db = mysql.connect(**self.db_config)
+    cursor = db.cursor()
+    query = "update sessions set session_data = %s where session_id = %s;"
+    cursor.execute(query, (json.dumps(session_data),session_id))
+    db.commit()
+
+    cursor.close()
+    db.close()
+    return True if cursor.rowcount == -1 else False
+
 
   def update(self, session_id:str, session_data:dict) -> None:
     db = mysql.connect(**self.db_config)

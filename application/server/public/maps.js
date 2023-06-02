@@ -1,65 +1,18 @@
 // variables
 const add_member = document.querySelector("#add_member_bttn");
-const rescue_mode1 = document.querySelector("#rescue_mode_bttn1");
-var computed_color = getComputedStyle(rescue_mode1).backgroundColor;
-// const rescue_mode2 = document.querySelector("#rescue_mode_bttn2");
 let map;
 
 document.addEventListener("DOMContentLoaded", function () {
-  // fetching and posting coordinates  
+  // fetching and posting coordinates
   fetch_coordinates('/location', 'GET');
   // post_coordinates('/location', 'POST', {});
 
-  // fetch coordinates every 60 seconds 
+  // fetch coordinates every 60 seconds
   var intervial_id = setInterval(fetch_coordinates, 15000);
 
-  // event listener for adding a member
-  add_member.addEventListener("click", async function () {
-    console.log("add member");
-    // adding one child FIX FOR MULTIPLE
-    add_child(2);
-  })
-
-  // event listener for going into rescue mode for first child
-  rescue_mode1.addEventListener("click", async function () {
-    // button clicked
-    // console.log("rescue_mode1");
-
-    // change the color of the button when clicked
-    rescue_mode1.classList.toggle('clicked');
-
-    // check the color of the button to red
-    computed_color = getComputedStyle(rescue_mode1).backgroundColor;
-    // console.log(computed_color);
-
-    // Check if the color is red
-    if (computed_color === 'rgb(255, 0, 0)' || computed_color === 'red') {
-      rescue_coordinates('/rescue', 'GET');
-
-      // clearing previous interval 
-      clearInterval(intervial_id);
-
-      // fetch coordinates every 3 seconds in rescue mode
-      intervial_id = setInterval(rescue_coordinates, 3000);
-
-      // post_coordinates('/location', 'POST', {});
-
-      // console.log("color is", computed_color);
-    }
-
-    else {
-      // clearing previous interval 
-      clearInterval(intervial_id);
-
-      fetch_coordinates('/location', 'GET');
-
-      // fetch coordinates every 60 seconds 
-      intervial_id = setInterval(fetch_coordinates, 15000);
-
-      // post_coordinates('/location', 'POST', {});
-    }
+  add_member.addEventListener('click', function (event) {
+    add_child();
   });
-  // console.log("map loaded!");
 });
 
 // ----------------------------------------- DISPLAYING MAP -----------------------------------------
@@ -87,7 +40,7 @@ async function initMap(latitude, longitude) {
 }
 
 // MODIFY for when decision is made on message protocol
-const latitude = 40.689247; 
+const latitude = 40.689247;
 const longitude = -74.044502;
 initMap(latitude,longitude);
 // ----------------------------------------- FETCHING COORDINATES OF CHILD -----------------------------------------
@@ -155,37 +108,230 @@ async function rescue_coordinates() {
 //     .catch(error => console.error('Error:', error));
 // }
 
+// ----------------------------------------- HELPFUL FUNCTIONS -----------------------------------------
+const body = document.querySelector("body");
+
+function closeForm() {
+    var overlay = document.querySelector('#overlay');
+    overlay.remove();
+    body.style.overflow = 'auto'; // Restore scrolling
+}
+
+function getCookie(name) {
+    var cookieArr = document.cookie.split(";");
+    for (var i = 0; i < cookieArr.length; i++) {
+        var cookiePair = cookieArr[i].split("=");
+        if (name === cookiePair[0].trim()) {
+            return decodeURIComponent(cookiePair[1]);
+        }
+    }
+    return null;
+}
 // ----------------------------------------- ADDING CHILDREN -----------------------------------------
-function add_child(id) {
-  // Create the child profile div
-  const child_div = document.createElement("div");
-  child_div.classList.add("kids_profile");
+let childId;
+function add_child() {
+    var overlay = document.createElement('div');
+    overlay.id = 'overlay';
 
-  // Create the child image element
-  const image = document.createElement("img");
-  image.src = "#";
-  child_div.appendChild(image);
+    var form = document.createElement('form');
+    form.id = 'member_form';
 
-  // Create the child name paragraph
-  const name = document.createElement("p");
-  name.textContent = "kid #" + id;
-  child_div.appendChild(name);
+    var firstNameInput = document.createElement('input');
+    firstNameInput.type = 'text';
+    firstNameInput.placeholder = 'First Name';
+    firstNameInput.name = 'first_name'
 
-  // Create the rescue mode button
-  const rescue_button = document.createElement("button");
-  rescue_button.textContent = "Rescue Mode";
-  rescue_button.id = "rescue_mode_bttn" + id;
-  child_div.appendChild(rescue_button);
+    var lastNameInput = document.createElement('input');
+    lastNameInput.type = 'text';
+    lastNameInput.placeholder = 'Last Name';
+    lastNameInput.name = 'last_name'
 
-  // Append the child profile to the parent section
-  const kids_section = document.getElementById("kids");
-  kids_section.appendChild(child_div);
+    var closeButton = document.createElement('button');
+    closeButton.id = 'close_button'
+    closeButton.textContent = 'X';
+    closeButton.addEventListener('click', function () {
+      closeForm();
+    });
 
-  // Add event listener to the rescue mode button
-  rescue_button.addEventListener("click", function() {
-    console.log("Rescue button kid " + id);
-    // Add your rescue mode logic here
-  });
+    var submitButton = document.createElement('input');
+    submitButton.type = 'submit';
+    submitButton.value = 'Submit';
+
+    form.appendChild(closeButton);
+    form.appendChild(firstNameInput);
+    form.appendChild(lastNameInput);
+    form.appendChild(submitButton);
+
+    overlay.appendChild(form);
+    body.appendChild(overlay);
+
+    // Prevent scrolling when the form is open
+    body.style.overflow = 'hidden';
+
+    // Handle form submission
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        // Add your code here to handle form submission
+        var firstName = firstNameInput.value;
+        var lastName = lastNameInput.value;
+        var parentId = getCookie("user_id");
+
+        // Create the child profile div
+        const child_div = document.createElement("div");
+        child_div.classList.add("kids_profile");
+
+        // Create the child image element
+        const image = document.createElement("img");
+        image.classList.add('profile_pic');
+        image.src = "../public/images/blank_profile.png";
+
+        // Create the child name paragraph
+        const name = document.createElement("p");
+        name.textContent = firstName + ' ' + lastName;
+//        const kid_num = document.createElement("p");
+//        kid_num.textContent = "kid #" + id;
+
+        // Create the rescue mode button
+        const rescue_button = document.createElement("button");
+        rescue_button.textContent = "Rescue Mode";
+        rescue_button.classList.add('rescue_mode_bttn')
+//        rescue_button.id = "rescue_mode_bttn" + id;
+
+        // Append the image and paragraph elements to the new kids_profile div
+        child_div.appendChild(image);
+        child_div.appendChild(name);
+//        child_div.appendChild(kid_num);
+        child_div.appendChild(rescue_button);
+
+        // Append the child profile to the parent section
+        const kids_section = document.getElementById("kids");
+        kids_section.appendChild(child_div);
+
+        // Add event listener to the new kids_profile div for editing
+        image.addEventListener("click", function () {
+            edit_profile(child_div);
+        });
+
+        // Add event listener to the rescue mode button
+        rescue_button.addEventListener("click", function() {
+//        console.log("Rescue button kid " + id);
+        // Add your rescue mode logic here
+//            console.log("rescue button clicked")
+
+            rescue_button.classList.toggle('clicked');
+            var isClicked = rescue_button.classList.contains('clicked');
+
+            if(isClicked){
+                rescue_button.style.backgroundColor = 'red'
+            }else{
+                rescue_button.style.backgroundColor = 'green'
+            }
+
+            // Check if the color is red
+            if ( rescue_button.style.backgroundColor === 'red') {
+                rescue_coordinates('/rescue', 'GET');
+
+                // clearing previous interval
+                clearInterval(intervial_id);
+
+                // fetch coordinates every 3 seconds in rescue mode
+                intervial_id = setInterval(rescue_coordinates, 3000);
+
+    //          // post_coordinates('/location', 'POST', {});
+            }else{
+                // clearing previous interval
+                clearInterval(intervial_id);
+
+                fetch_coordinates('/location', 'GET');
+
+                // fetch coordinates every 60 seconds
+                intervial_id = setInterval(fetch_coordinates, 15000);
+            }
+        });
+
+        child_data = {first_name: firstName, last_name: lastName, parent_id: parentId}
+        fetch('/create_child', {
+            credentials: 'same-origin',
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(child_data)
+        })
+        .then(response => response.json())
+        .then(response => {
+            childId = response.child_id;
+            console.log(childId);
+        });
+        closeForm();
+    });
+}
+// ----------------------------------------- EDITING CHILDREN -----------------------------------------
+function edit_profile(profile){
+    var overlay = document.createElement('div');
+    overlay.id = 'overlay';
+
+    var form = document.createElement('form');
+    form.id = 'member_form';
+
+    var firstNameInput = document.createElement('input');
+    firstNameInput.type = 'text';
+    firstNameInput.placeholder = 'First Name';
+
+    var lastNameInput = document.createElement('input');
+    lastNameInput.type = 'text';
+    lastNameInput.placeholder = 'Last Name';
+
+    var closeButton = document.createElement('button');
+    closeButton.id = 'close_button'
+    closeButton.textContent = 'X';
+    closeButton.addEventListener('click', function () {
+      closeForm();
+    });
+
+    var submitButton = document.createElement('input');
+    submitButton.type = 'submit';
+    submitButton.value = 'Submit';
+
+    form.appendChild(closeButton);
+    form.appendChild(firstNameInput);
+    form.appendChild(lastNameInput);
+    form.appendChild(submitButton);
+
+    overlay.appendChild(form);
+    body.appendChild(overlay);
+
+    // Prevent scrolling when the form is open
+    body.style.overflow = 'hidden';
+
+    // Handle form submission
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        var firstName = firstNameInput.value;
+        var lastName = lastNameInput.value;
+
+        var this_kid = document.querySelector('.kids_profile p');
+        this_kid.innerHTML = firstName + ' ' + lastName;
+
+        // Send updated data to the server
+        var childData = {
+            first_name: firstName,
+            last_name: lastName,
+            child_id: childId
+        };
+
+        fetch("/edit_child", {
+            credentials: "same-origin",
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(childData)
+        })
+        .then((response) => response.json())
+        .then((response) => {
+            console.log(response);
+        });
+
+        closeForm();
+    });
 }
 
 console.log("map loaded!");
