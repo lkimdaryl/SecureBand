@@ -47,6 +47,16 @@ def create_child(first_name: str, last_name: str, parent_id: int) -> int:
   db.close()
   return child_id
 
+def add_coordinates(child_id: int, latitude: str, longitude: str) -> bool:
+  db = mysql.connect(**db_config)
+  print("CHILD ID, LAT, LON: ",child_id + latitude + longitude)
+  cursor = db.cursor()
+  query = 'INSERT INTO locations (child_id, latitude, longitude) values (%s, %s, %s);'
+  values = (child_id, latitude, longitude)
+  cursor.execute(query, values)
+  db.commit()
+  db.close()
+  return cursor.lastrowid
 
 # SELECT SQL query
 def select_users(username:str=None) -> list:
@@ -62,6 +72,29 @@ def select_users(username:str=None) -> list:
     result = cursor.fetchone()
   db.close()
   return result
+
+def select_children(parent_id:int) -> list: 
+  db = mysql.connect(**db_config)
+  cursor = db.cursor()
+  query = f'SELECT child_id, first_name, last_name FROM children WHERE parent_id="{parent_id}";'
+  cursor.execute(query)
+  result = cursor.fetchall()
+  db.close()
+  return result 
+
+def select_coordinates(child_id:int) -> list:
+  db = mysql.connect(**db_config)
+  cursor = db.cursor()
+  query = f'SELECT location_id, latitude, longitude FROM locations WHERE child_id = "{child_id}" ORDER BY location_id DESC LIMIT 1;'
+  cursor.execute(query)
+  result = cursor.fetchone()
+  db.close()
+
+  if result is not None:
+    location_id, latitude, longitude = result
+    return {'location_id': location_id, 'latitude': float(latitude), 'longitude': float(longitude)}
+  else:
+    return {} # empty if no result
 
 # UPDATE SQL query
 def update_user(user_id:int, username:str, email:str, password:str) -> bool:
@@ -100,6 +133,7 @@ def update_email(user_id:int, email:str) -> bool:
 # UPDATE user password ONLY based on user_id
 def update_password(user_id:int, password:str) -> bool:
   encrypted_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
 # UPDATE user email ONLY based on user_id
 def update_username(user_id:int, username:str) -> bool:
   db = mysql.connect(**db_config)
@@ -206,14 +240,3 @@ def nonexistent_email(email: str)->bool:
   cursor.close()
   db.close()
   return True
-
-# Add coordinates of a child to the database
-def add_coordinates(child_id: int, latitude: str, longitude: str) -> bool:
-  db = mysql.connect(**db_config)
-  cursor = db.cursor()
-  query = 'INSERT INTO locations (child_id, latitude, longitude) values (%s, %s, %s);'
-  values = (child_id, latitude, longitude)
-  cursor.execute(query, values)
-  db.commit()
-  db.close()
-  return cursor.lastrowid
