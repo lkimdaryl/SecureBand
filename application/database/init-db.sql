@@ -29,8 +29,8 @@ create table if not exists children (
 create table if not exists locations (
     location_id     int auto_increment primary key,
     child_id        int not null,
-    latitude        smallint not null,
-    longitude       smallint not null,
+    latitude        DECIMAL(9,6) not null,
+    longitude       DECIMAL(9,6) not null,
     FOREIGN KEY (child_id) REFERENCES children(child_id)
 );
 

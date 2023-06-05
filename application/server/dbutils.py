@@ -217,3 +217,29 @@ def add_coordinates(child_id: int, latitude: str, longitude: str) -> bool:
   db.commit()
   db.close()
   return cursor.lastrowid
+
+# Check if child with child_id exists in the database
+def get_child(child_id: int):
+  db = mysql.connect(**db_config)
+  cursor = db.cursor()
+  query = 'select * from children where child_id=%s'
+  cursor.execute(query,(child_id,))
+  result = cursor.fetchone()
+  cursor.close()
+  db.close()
+  return result
+
+# Get the parent of the child with the corresponding child_id
+def get_parent_of_child(child_id: str):
+  db = mysql.connect(**db_config)
+  cursor = db.cursor()
+  query = ''' 
+  SELECT c.first_name AS child_first_name, c.last_name AS child_last_name, 
+  u.first_name AS parent_first_name, u.last_name AS parent_last_name, u.email 
+  FROM children c JOIN users u ON c.parent_id = u.user_id WHERE c.child_id = %s;
+  '''
+  cursor.execute(query,(child_id,))
+  result = cursor.fetchone()
+  cursor.close()
+  db.close()
+  return result
