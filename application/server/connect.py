@@ -10,6 +10,8 @@ topic_subscribe = "SecureBand/#"
 topic_rescue = "SecureBand/Rescue"
 username = 'Admin'
 password = 'SecureBandece140b'
+# broker_address = '05dd93c59d194b748d1862b8002f5c1d.s1.eu.hivemq.cloud'
+# port = 8883
 broker_address = "broker.hivemq.com"
 port = 1883
 
