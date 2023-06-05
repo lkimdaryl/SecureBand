@@ -202,7 +202,7 @@ def get_location(child_id: int):
 
     coordinates = db.select_coordinates(child_id)
 
-    if coordinates == {}: 
+    if coordinates == None: 
         return {"latitude": 0.0, "longitude": 0.0}
   
     latitude = coordinates['latitude']
@@ -324,7 +324,6 @@ def update_email(user_data:dict) -> dict:
 @app.put('/update_password')
 def update_password(user_data:dict) -> dict:
   return {'success': db.update_password(user_data['user_id'], user_data['password'])}
-
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 # Main function
