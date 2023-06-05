@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   add_member.addEventListener('click', function (event) {
     add_child();
+    // location.reload();
+    // console.log('hi');
   });
 });
 
@@ -83,7 +85,7 @@ async function rescue_coordinates() {
 }
 
 // ----------------------------------------- POSTING COORDINATES OF CHILD -----------------------------------------
-async function post_coordinates(url='/location', verb='POST', data={}, callback) {
+async function post_coordinates(url = '/location', verb = 'POST', data = {}, callback) {
   return fetch(url, {
     credentials: 'same-origin',
     method: verb,
@@ -226,6 +228,7 @@ function add_child() {
       });
     closeForm();
   });
+
 }
 
 // ----------------------------------------- EDITING CHILDREN -----------------------------------------
@@ -331,7 +334,7 @@ async function display_children(url = "/display", verb = "GET", callback) {
 
         // fetching and posting coordinates
         fetch_coordinates();
-        post_coordinates('/location', 'POST', { child_id : child.child_id });
+        post_coordinates('/location', 'POST', { child_id: child.child_id });
 
         // fetch coordinates every 60 seconds
         coordinates_interval = setInterval(fetch_coordinates, 15000);
@@ -356,7 +359,7 @@ async function display_children(url = "/display", verb = "GET", callback) {
           // Check if the color is red
           if (rescue_button.style.backgroundColor === 'red') {
             rescue_coordinates();
-            post_coordinates('/location', 'POST', { child_id : child.child_id });
+            post_coordinates('/location', 'POST', { child_id: child.child_id });
 
             // clearing previous interval
             clearInterval(coordinates_interval);
@@ -373,7 +376,7 @@ async function display_children(url = "/display", verb = "GET", callback) {
 
             // fetching and posting coordinates
             fetch_coordinates();
-            post_coordinates('/location', 'POST', { child_id : child.child_id });
+            post_coordinates('/location', 'POST', { child_id: child.child_id });
 
             // fetch coordinates every 60 seconds
             coordinates_interval = setInterval(fetch_coordinates, 15000);
