@@ -10,8 +10,10 @@ topic_subscribe = "SecureBand/#"
 topic_rescue = "SecureBand/Rescue"
 username = 'Admin'
 password = 'SecureBandece140b'
-broker_address = "broker.hivemq.com"
-port = 1883
+broker_address = '05dd93c59d194b748d1862b8002f5c1d.s1.eu.hivemq.cloud'
+port = 8883
+#broker_address = "broker.hivemq.com"
+#port = 1883
 
 # Global dictionary to store the latest coordinates
 latest_coordinates = {"latitude": 0.0, "longitude": 0.0}
@@ -84,7 +86,7 @@ async def start_connection():
     client.on_connect = on_connect
 
     # enable TLS for secure connection --> NOT USING SSL connection
-    # client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
+    client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
 
     # setting username and password
     client.username_pw_set(username, password)

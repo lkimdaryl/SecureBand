@@ -202,7 +202,7 @@ def get_location(child_id: int):
 
     coordinates = db.select_coordinates(child_id)
 
-    if coordinates == None: 
+    if coordinates == {}: 
         return {"latitude": 0.0, "longitude": 0.0}
   
     latitude = coordinates['latitude']
