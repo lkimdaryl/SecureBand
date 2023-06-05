@@ -125,6 +125,18 @@ def get_html() -> HTMLResponse:
 def get_html() -> HTMLResponse:
     with open("html/contact_us.html") as html:
         return HTMLResponse(content=html.read())
+    
+#Get emergency contact page
+@app.get("/emergency_contact/{child_id}", response_class=HTMLResponse)
+def get_emergency_contact(child_id:str):
+  # Check if child with child_id exists in database
+  if db.get_child(child_id) != None:
+    with open("html/emergency_contact.html") as html:
+      return HTMLResponse(content=html.read())
+  # Else redirect to error page
+  else:
+     with open("html/homepage.html") as html:
+      return HTMLResponse(content=html.read())
 
 """
 GET REQUESTS (AUTHENTICATION)
@@ -147,6 +159,11 @@ def get_session_status(request:Request):
     return {'success': True}
   else:
     return {'success': False}
+  
+#GET info about parent of a child with a given child_id
+@app.get('/get_parent/{child_id}')
+def get_parent(child_id:str):
+  return db.get_parent_of_child(child_id)
 
 """
 GET REQUESTS (LOCATION)
