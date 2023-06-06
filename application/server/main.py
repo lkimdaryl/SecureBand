@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request, Response    # The main FastAPI import and 
 from fastapi.responses import RedirectResponse    # Used to redirect to another route
 from pydantic import BaseModel                    # Used to define the model matching the DB Schema
 from fastapi.responses import HTMLResponse        # Used for returning HTML responses (JSON is default)
+from fastapi.responses import JSONResponse        # Used for returning JSON responses 
 from fastapi.templating import Jinja2Templates    # Used for generating HTML from templatized files
 from fastapi.staticfiles import StaticFiles       # Used for making static resources available to server
 import uvicorn                                    # Used for running the app directly through Python
@@ -166,30 +167,63 @@ def get_parent(child_id:str):
   return db.get_parent_of_child(child_id)
 
 """
+GET REQUESTS (CHILDREN)
+"""
+#GET children of User
+@app.get("/display", response_class=JSONResponse)
+def get_children(request: Request) -> JSONResponse:
+    session = sessions.get_session(request)
+
+    if len(session) > 0 and session.get('logged_in'):
+        parent_id = session.get('user_id')
+        children_data = db.select_children(parent_id)
+
+        children_list = []
+
+        for child_data in children_data:
+            child = {
+                'child_id': child_data[0],
+                'first_name': child_data[1],
+                'last_name': child_data[2]
+            }
+            children_list.append(child)
+        return JSONResponse(children_list)
+    else:
+        return JSONResponse(content={'error': 'Unauthorized'}, status_code=401)
+
+"""
 GET REQUESTS (LOCATION)
 """
 #GET latitude and longitude data from SecureBand/GPS
-@app.get("/location")
-def get_location():
+@app.get("/location/{child_id}")
+def get_location(child_id: int):
     connect.rescue_mode(1)
     connect.public_rescue(client)
 
-    latitude = connect.latest_coordinates.get("latitude", 0.0)
-    longitude = connect.latest_coordinates.get("longitude", 0.0)
+    coordinates = db.select_coordinates(child_id)
+
+    if coordinates == {}: 
+        return {"latitude": 0.0, "longitude": 0.0}
+  
+    latitude = coordinates['latitude']
+    longitude = coordinates['longitude']
     
     return {"latitude": latitude, "longitude": longitude}
 
 #GET latitude and longitude data from SecureBand/Rescue
-@app.get("/rescue")
-def get_location():
+@app.get("/rescue/{child_id}")
+def get_location(child_id: int):
     connect.rescue_mode(2)
     connect.public_rescue(client)
 
-    latitude = connect.latest_coordinates.get("latitude", 0.0)
-    longitude = connect.latest_coordinates.get("longitude", 0.0)
+    coordinates = db.select_coordinates(child_id)
     
-    # print("lat:", latitude)
-    # print("lon:", longitude)
+    if coordinates == None: 
+        return {"latitude": 0.0, "longitude": 0.0}
+  
+    latitude = coordinates['latitude']
+    longitude = coordinates['longitude']
+
     return {"latitude": latitude, "longitude": longitude}
 
 # GET user data based on current session data
@@ -249,19 +283,20 @@ async def edit_child(request: Request) -> dict:
     db.update_child(child_data['first_name'], child_data['last_name'], child_data['child_id'])
     return {'success': True}
 
-# POST location
 # Used to post the location of a child
-# @app.post("/location")
-# async def post_location() -> dict:
-#     latitude = connect.latest_coordinates.get("latitude", 0.0)
-#     longitude = connect.latest_coordinates.get("longitude", 0.0)
+@app.post("/location")
+async def post_location(data: dict) -> dict:
+    child_id = 1
 
-#     db.add_coordinates(1,latitude, longitude)
-    
-#     return {'success' : True}
+    latitude = connect.latest_coordinates.get("latitude", 0.0)
+    longitude = connect.latest_coordinates.get("longitude",0.0)
+
+    if latitude != 0.0 and longitude != 0.0: 
+      db.add_coordinates(child_id, latitude, longitude)
+      return {'SUCCESS: CHANGING NEW LOCATION' : True}
+    return {'FAIL: KEEPING CURRENT LOCATION' : True}
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
 # POST password verification
 @app.post("/confirm_password")
 def confirm_password(user_data:dict) -> bool:
@@ -291,15 +326,10 @@ def update_password(user_data:dict) -> dict:
   return {'success': db.update_password(user_data['user_id'], user_data['password'])}
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
 # Main function
 if __name__ == "__main__":
-    # asyncio.run(connect.start_connection())
     loop = asyncio.get_event_loop()
     client = loop.run_until_complete(connect.start_connection())
     loop.close()
 
-    # loop = asyncio.get_event_loop()
-    # loop.run_until_complete(connect.start_connection())
-    # loop.close()
     uvicorn.run(app, host="0.0.0.0", port=6543)
