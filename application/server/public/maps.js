@@ -11,8 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   add_member.addEventListener('click', function (event) {
     add_child();
-    // location.reload();
-    // console.log('hi');
   });
 });
 
@@ -225,8 +223,10 @@ function add_child() {
       .then(response => {
         childId = response.child_id;
         console.log("child_id:", childId);
+        location.reload();
       });
     closeForm();
+
   });
 
 }
