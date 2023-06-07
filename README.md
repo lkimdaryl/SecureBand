@@ -74,4 +74,12 @@ Overall, there were many more things we could have added to this MVP. But aftera
 
 # Credits
 
-TODO
+**Joshua Lapidario (UCSD, BS Computer Engineering '24)**: Backend Software Developer (REST routing, Account authentication, Database management)
+
+**Ashlee Young (UCSD, BS Electrical Engineering '25)**: Backend Software Developer (MQTT communications, Database managment)
+
+**Edward Burns (UCSD, BS Computer Engineering '24)**: Firmware Engineer (ESP32 hardware, MQTT communications)
+
+**Kim Lim (UCSD, BS Computer Science '24)**: UI/UX Designer (Web application sustainability) 
+
+Many thanks aswell to **Prof. Rick Gessner**, **Prof. Ramsin Khoshabeh**, and the staff of **ECE 140B** at **UCSD**.
