@@ -337,9 +337,9 @@ async function display_children(url = "/display", verb = "GET", callback) {
         post_coordinates('/location', 'POST', { child_id: child.child_id });
 
         // fetch coordinates every 60 seconds
-        coordinates_interval = setInterval(fetch_coordinates, 15000);
+        coordinates_interval = setInterval(fetch_coordinates, 60000);
         // post coordinates every 60 seconds
-        posting_interval = setInterval(post_coordinates, 15000);
+        posting_interval = setInterval(post_coordinates, 60000);
 
         // Add event listener to the rescue mode button
         rescue_button.addEventListener("click", function () {
@@ -366,8 +366,8 @@ async function display_children(url = "/display", verb = "GET", callback) {
             clearInterval(posting_interval);
 
             // fetch and post coordinates every 3 seconds in rescue mode
-            coordinates_interval = setInterval(rescue_coordinates, 3000);
-            posting_interval = setInterval(post_coordinates, 3000);
+            coordinates_interval = setInterval(rescue_coordinates, 1000);
+            posting_interval = setInterval(post_coordinates, 1000);
 
           } else {
             // clearing previous interval
@@ -379,9 +379,9 @@ async function display_children(url = "/display", verb = "GET", callback) {
             post_coordinates('/location', 'POST', { child_id: child.child_id });
 
             // fetch coordinates every 60 seconds
-            coordinates_interval = setInterval(fetch_coordinates, 15000);
+            coordinates_interval = setInterval(fetch_coordinates, 60000);
             // post coordinates every 60 seconds
-            posting_interval = setInterval(post_coordinates, 15000);
+            posting_interval = setInterval(post_coordinates, 60000);
           }
         });
         child_div.appendChild(image);

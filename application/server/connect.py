@@ -10,10 +10,10 @@ topic_subscribe = "SecureBand/#"
 topic_rescue = "SecureBand/Rescue"
 username = 'Admin'
 password = 'SecureBandece140b'
-broker_address = '05dd93c59d194b748d1862b8002f5c1d.s1.eu.hivemq.cloud'
-port = 8883
-#broker_address = "broker.hivemq.com"
-#port = 1883
+#broker_address = '05dd93c59d194b748d1862b8002f5c1d.s1.eu.hivemq.cloud'
+#port = 8883
+broker_address = "broker.hivemq.com"
+port = 1883
 
 # Global dictionary to store the latest coordinates
 latest_coordinates = {"latitude": 0.0, "longitude": 0.0}
@@ -55,28 +55,39 @@ def on_message(client, userdata, msg):
 # define rescue
 rescue = 1
 
+# define last rescue
+lastRescue = -1
+
 def rescue_mode(mode):
     global rescue
     rescue = mode
     print("rescue mode:", rescue)
 
 def public_rescue(client):
+    global rescue
+    global lastRescue
     print("rescue variable:", rescue)
 
-    if rescue == 1:
-        # publish to SecureBand/Rescue
-        client.publish(topic_rescue, payload="1", qos=1)
+    print("last rescue: " + str(lastRescue))
+    if rescue != lastRescue:
+        if rescue == 1:
+            # publish to SecureBand/Rescue
+            client.publish(topic_rescue, payload="1", qos=1)
+            print('published 1')
 
-    elif rescue == 2:
-        # publish to SecureBand/Rescue
-        client.publish(topic_rescue, payload="2", qos=1)
+        elif rescue == 2:
+            # publish to SecureBand/Rescue
+            client.publish(topic_rescue, payload="2", qos=1)
+            print('published 2')
 
-    else:
-        # publish to SecureBand/Rescue
-        client.publish(topic_rescue, payload="0", qos=1)
+        else:
+            # publish to SecureBand/Rescue
+            client.publish(topic_rescue, payload="0", qos=1)
 
-        # unsubscribe from SecureBand/GPS and SecureBand/Rescue
-        client.unsubscribe(topic_subscribe)
+            # unsubscribe from SecureBand/GPS and SecureBand/Rescue
+            client.unsubscribe(topic_subscribe)
+
+        lastRescue = rescue
 
 async def start_connection():
     global rescue
@@ -86,7 +97,7 @@ async def start_connection():
     client.on_connect = on_connect
 
     # enable TLS for secure connection --> NOT USING SSL connection
-    client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
+    #client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
 
     # setting username and password
     client.username_pw_set(username, password)
