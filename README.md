@@ -5,7 +5,7 @@ Welcome to the SecureBand code repository!
 The **SecureBand** is an IoT GPS tracking device that can be used for parents or caretakers to keep track of their children, patients, or elderly individuals’ locations.
 
 Since the SecureBand is an IoT device, both hardware and software are incorporated. On the hardware side, an ESP32 microcontroller is used to send GPS coordinate data via bluetooth to an external MQTT server. 
-On the software side, we created a web server using Python’s FastAPI framework on the backend and Vanilla Javascript + HTML/CSS on the frontend. There are features to register an account, login, manage account settings, manage child devices, view child locations, and view emergency contact pages. 
+On the software side, we created a web server using Python’s FastAPI framework on the backend and Javascript + HTML/CSS on the frontend. There are features to register an account, login, manage account settings, manage child devices, view child locations, and view emergency contact pages. 
 The backbone of communications between hardware and software is through MQTT communications, and 
 data persistence in our application revolves around  information stored into our MySQL database.
 
@@ -19,14 +19,14 @@ Here is a helpful visualization of the different interactions within our applica
 For the software, you will need a version **Python3** installed onto your machine. This can be obtained using a condas environment such as anaconda or miniconda. You will also need the libraries ```fastapi```, ```uvicorn```, ```os```, ```json```, ```connect```, ```asyncio```, ```mysql```, ```bcrypt```, and ```dotenv```. 
 These are quite a few, so feel free to look up how to properly import each of them online. You will also need ***MySQL*** installed onto your machine. Once you have that installed, change the fields in ```credentials.env``` file to match your MySQL user and password.
 Then, you must run the script ```init-db.sql``` in your MySQL session to create the database used for the SecureBand.
-In MySQL, you should have a database called ```SecureBand``` with 
+In MySQL, you should have a database called ```SecureBand```. 
 
 For the hardware, you will need a physical ESP32 device. You have to register this on to an MQTT broker side such as https://www.hivemq.com/ and set up different subscription channels and change the fields in ```connect.py``` appropriately.
 
 Once everything is set up, simply run the file ```main.py``` to start the server. You can the go to ```localhost:6543``` on your browser to access the SecureBand web application!
 
 ### Firmware Setup
-Load the CELL_GPS.ino file onto your esp32 equipped with a T-SIM7000G chip. You'll have to edit this file to put in your network's apn. Make sure to load a CAT-M, NB-IOT, or 2G sim card. No 4G or 5G.
+Load the CELL_GPS.ino file onto your esp32 equipped with a T-SIM7000G chip. You'll have to edit this file to put in your network's apn. Make sure to load a CAT-M, NB-IOT, or 2G sim card.
 
 To test without a cell connection, use the WIFI_GPS.ino file and edit it with your wifi credentials.
 
@@ -48,17 +48,15 @@ Settings
 ![Alt Text](images/settings.png)
 
 # Hardware Overview
-SecureBand - Our current MVP implementation.
-![](images/secureband.png)
-
-Antennas - We capture GPS data on set intervals and then broadcast that GPS data over the Cellular Antenna. The GPS capture frequency is received as a message over the Cell Antenna.
-![](images/antennas.png)
-
-Esp32 T-SIM7000G. The microcontroller handles setting up the antennas, connecting to the cellular network, and the main loop of processing incoming requests from our servers and sending outgoing GPS data. Powered by a 186500 Lithium-Ion Battery.
-![](images/esp32.png)
+SecureBand - Our current MVP implementation.    
+<img src="images/secureband.png" alt="Image Description" width="200" >
 
 
+Antennas - We capture GPS data on set intervals and then broadcast that GPS data over the Cellular Antenna. The GPS capture frequency is received as a message over the Cell Antenna.   
+<img src="images/antennas.png" alt="Image Description" width="200" >
 
+Esp32 T-SIM7000G. The microcontroller handles setting up the antennas, connecting to the cellular network, and the main loop of processing incoming requests from our servers and sending outgoing GPS data. Powered by a 186500 Lithium-Ion Battery.   
+<img src="images/esp32.png" alt="Image Description" width="200" >
 
 
 # Limitations
@@ -80,6 +78,6 @@ Overall, there were many more things we could have added to this MVP. But aftera
 
 **Edward Burns (UCSD, BS Computer Engineering '24)**: Firmware Engineer (ESP32 hardware, MQTT communications)
 
-**Kim Lim (UCSD, BS Computer Science '24)**: UI/UX Designer (Web application sustainability) 
+**Kim Lim (UCSD, BS Computer Science '24)**: FrontEnd Developer (Data Fetching, Input Validation, Web application sustainability) 
 
 Many thanks aswell to **Prof. Rick Gessner**, **Prof. Ramsin Khoshabeh**, and the staff of **ECE 140B** at **UCSD**.
