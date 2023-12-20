@@ -1,3 +1,11 @@
+:root {
+    --darkest-green: #1b4332;
+    --dark-green: #2d6a4f;
+    --green: #40916c;
+    --light-green: #95d5b2;
+    --lightest-green: #d8f3dc;
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -5,14 +13,14 @@ body {
     overflow: auto;
     width: 100%
     background-color: white;
+    color: var(--darkest-green);
   }
 
-.nav_bar {
+nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #4CAF50;
-    color: #fff;
+    background-color: var(--darkest-green);
     position: relative;
 }
 
@@ -24,40 +32,49 @@ body {
     height: 100%;
 }
 
-.nav-links li {
+nav ul {
+    margin: 0;
+}
+
+nav ul li {
+    list-style: none;
     display: inline-block;
-    margin: 10px;
+    padding: 20px;
 }
 
-.nav-links li a {
-    color: #fff;
+nav ul li:hover {
+    background-color: var(--green);
+    cursor: pointer;
+}
+
+nav ul li a {
+    color: var(--lightest-green);
     text-decoration: none;
-    padding: 10px;
-}
-
-.nav-links li a:hover {
-    background-color: green;
-
 }
 
 #login {
-    margin-right: 50px;
+    margin-right: 25px;
 }
 
-.banner {
-    display: block;
+section {
+    padding: 100px 0;
+}
+
+#banner {
+    display: flex;
     position: relative;
+    height: 100vh;
 }
 
 #banner_img{
-    position: relative;
-    height: 90vh;
-}
-
-#banner_img img {
     position: absolute;
     top: 0;
     left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#banner_img img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -66,105 +83,25 @@ body {
 
 #banner_text {
     position: absolute;
-    transform: translate(0%, -130%);
+    display: block;
     z-index: 1;
-    color: white;
+    color: var(--lightest-green);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 4);
-}
-
-.banner h1 {
-    font-size: 100px;
-    margin-left: 100px;
-}
-
-.banner p {
-    margin-left: 300px;
-    font-size: 40px;
-}
-
-.feature {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto;
-    justify-content: center;
-    align-items: center;
-    margin-top: 50px;
-    margin-bottom: 50px;
-}
-
-#img_feature{
-    margin: 40px;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-    margin-top: 50px;
-}
-
-.feature {
-    max-width: 90%;
-    margin: 0 auto;
-}
-
-#img_feature img{
-    width: 100%;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    margin-left: 15%;
-}
-
-#feature_list_container{
+    font-size: 3rem;
     margin-left: 50px;
 }
 
-.feature div h2{
-    padding-left: 50px;
-    padding-top: 80px;
-}
-
-.features{
-    padding-left: 50px;
-    list-style: none;
-}
-
-.pricing {
-    background-color: #EAFAF1;
-}
-
-.pricing h2 {
-    text-align: center;
-    padding-top: 50px;
-}
-
-.price_grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto;
-    text-align: center;
-}
-
-.price_grid div{
-    background-color: #ABEBC6;
-    padding: 50px;
-    margin: 50px;
-    border-radius: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
-
-.price_grid div img{
-    border-radius: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
-
 .about_us {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto;
-    justify-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
-    padding: 50px;
+    gap: 50px;
 }
 
 .about_us div{
-    margin: 50px;
+    width: 40%;
+    min-width: 300px;
 }
 
 #about_us_img{
@@ -173,7 +110,53 @@ body {
 
 .about_us a{
     text-decoration: none;
-    color: black;
+    color: var(--darkest-green);
+}
+
+#feature {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+    background: var(--lightest-green);
+}
+
+#feature div {
+    width: 40%;
+    min-width: 300px;
+}
+
+#feature ul {
+    padding: 0;
+}
+#feature ul li {
+    list-style: none;
+}
+
+#feature img{
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    margin-top: 50px;
+}
+
+#pricing h2 {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+#plan-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 100px;
+}
+
+#plan-wrapper div{
+    min-width: 300px;
+    text-align: center;
+    background: var(--light-green);
+    border-radius: 40px;
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
 }
 
 .testimonial {
@@ -193,7 +176,17 @@ body {
 
 .newsletter {
     text-align: center;
-    padding: 50px;
+    background: var(--lightest-green);
+}
+
+@media screen and (max-width: 600px){
+    #banner_text {
+        font-size: 2rem;
+    }
+
+    #feature img{
+        margin-top: 0;
+    }
 }
 
 
