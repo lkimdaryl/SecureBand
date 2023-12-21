@@ -3,26 +3,25 @@
 <html>
 <head>
     <title>Contact Us | SecureBand</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../public/main.css">
-    <link rel="stylesheet" href="../public/contact_style.css">
+<!--    <link rel="stylesheet" href="../public/contact_style.css">-->
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="nav_bar">
-        <ul class="nav-links">
-            <li><img class="logo" src="#"></li>
-			<li><a href="/" id="hometab">Home</a></li>
-			<li><a href="/about_us" id="abouttab">About Us</a></li>
-			<li><a href="/contact_us" id="contacttab">Contact Us</a></li>
-			<li><a href="/dashboard" id="dashtab" hidden>My Dashboard</a></li>
-        </ul>
-        <ul class="nav-links">
-            <li><a href="/settings" id="settings" hidden>Settings</a></li>
-            <li><a href="/register" id="signup" hidden>Sign Up</a></li>
-			<li><a href="/login" id="login" hidden>Login</a></li>
-            <li><a href="#" id="logout_button" hidden>Logout</a></li>
-        </ul>
-    </nav>
+	<nav class="nav_bar">
+		<div role="navigation">
+			<img class="logo" src="../public/images/logo.svg" alt="SecureBand Logo">
+			<ul class="nav-links">
+				<li><a href="/dashboard" id="dashtab">My Dashboard</a></li>
+				<li><a href="/about_us" id="abouttab">About Us</a></li>
+				<li><a href="/contact_us" id="contacttab">Contact Us</a></li>
+				<li><a href="/settings" id="settings">Settings</a></li>
+			</ul>
+		</div>
+		<ul class="nav-links">
+			<li><a href="#" id="logout_button">Logout</a></li>
+		</ul>
+	</nav>
 
     <!-- Contact Us Content -->
     <div class="contact_container">
@@ -41,18 +40,19 @@
         </div>
 
         <div>
-            <h2>Send Message</h2>
 		    <form action="/send_message" method="POST">
-			<input type="text" id="full_name" name="full_name" placeholder="Full Name"><br><br>
+                <fieldset>
+                    <legend><h2>Send Message</h2></legend>
+                    <input type="text" id="full_name" name="full_name" placeholder="Full Name"><br><br>
 
-			<input type="text" id="email" name="email" placeholder="Email"><br><br>
+                    <input type="text" id="email" name="email" placeholder="Email"><br><br>
 
-            <textarea id="message" name="message" rows="8" cols="50" placeholder="Enter Message"></textarea><br><br>
+                    <textarea id="message" name="message" rows="8" cols="50" placeholder="Enter Message"></textarea><br><br>
 
-			<input type="submit" value="Send">
-		</form>
+                    <input type="submit" value="Send">
+                </fieldset>
+		    </form>
         </div>
-
     </div>
     <script  src="./public/logout.js"></script>
     <script  src="./public/session.js"></script>

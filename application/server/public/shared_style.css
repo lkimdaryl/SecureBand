@@ -8,10 +8,48 @@
 
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
+    margin: 0 auto;
     padding: 0;
     overflow: auto;
-    width: 100%
-    background-color: white;
+    width: 100%;
+    background-color: #f0f0f0;
     color: var(--darkest-green);
-  }
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--darkest-green);
+    position: relative;
+}
+
+nav div {
+    display: flex;
+    flex-wrap: no-wrap;
+}
+
+nav ul {
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    list-style: none;
+    display: inline-block;
+    padding: 20px;
+}
+
+nav ul li:hover {
+    background-color: var(--green);
+    cursor: pointer;
+}
+
+nav ul li a {
+    color: var(--lightest-green);
+    text-decoration: none;
+}
+
+.logo {
+    padding: 0 20px;
+}

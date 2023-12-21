@@ -1,42 +1,7 @@
 @import "./shared_style.css";
 
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--darkest-green);
-    position: relative;
-}
 
-nav div {
-    display: flex;
-    flex-wrap: no-wrap;
-}
 
-.logo {
-    padding: 0 20px;
-}
-
-nav ul {
-    margin: 0;
-    padding: 0;
-}
-
-nav ul li {
-    list-style: none;
-    display: inline-block;
-    padding: 20px;
-}
-
-nav ul li:hover {
-    background-color: var(--green);
-    cursor: pointer;
-}
-
-nav ul li a {
-    color: var(--lightest-green);
-    text-decoration: none;
-}
 
 
 section {
