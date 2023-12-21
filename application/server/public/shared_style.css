@@ -1,0 +1,17 @@
+:root {
+    --darkest-green: #1b4332;
+    --dark-green: #2d6a4f;
+    --green: #40916c;
+    --light-green: #95d5b2;
+    --lightest-green: #d8f3dc;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+    width: 100%
+    background-color: white;
+    color: var(--darkest-green);
+  }

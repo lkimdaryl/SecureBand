@@ -8,12 +8,14 @@
 </head>
 <body>
 	<nav>
+		<div role="navigation">
+		<img class="logo" src="../public/images/logo.svg" alt="SecureBand Logo">
 		<ul>
-			<li><img class="logo" src="#"></li>
 			<li><a href="/" id="hometab">Home</a></li>
 			<li><a href="/about_us" id="abouttab">About Us</a></li>
 			<li><a href="/contact_us" id="contacttab">Contact Us</a></li>
 		</ul>
+		</div>
 		<ul>
 			<li><a href="/register" id="signup">Sign Up</a></li>
 			<li><a href="/login" id="login">Login</a></li>
@@ -23,7 +25,7 @@
 	<!-- Banner -->
 	<section id="banner">
 		<div id="banner_img">
-			<img src="../public/images/banner3.jpg">
+			<img src="../public/images/banner3.jpg" alt="SecureBand Banner Image">
 		</div>
 		<div id="banner_text">
 			<h1>SecureBand</h1>
@@ -31,10 +33,10 @@
 		</div>
 	</section>
 
-		<!-- About Us Section -->
-	<section class="about_us">
+	<!-- About Us Section -->
+	<section id="about_us">
 		<div>
-			<img id="about_us_img" src="../public/images/group.jpg">
+			<img id="about_us_img" src="../public/images/group.jpg" alt="About Us Image">
 		</div>
 		<div>
 			<h2>About Us</h2>
@@ -61,15 +63,14 @@
 			<ul>
 				<li><a>Provides real-time location tracking</a></li><br>
 				<li><a>Has the ability to set up safe zones adding an extra layer of security</a></li><br>
-				<li><a>Integrated tamper alerts,  ensuring continuous monitoring</a></li><br>
+				<li><a>Integrated tamper alerts, ensuring continuous monitoring</a></li><br>
 				<li><a>Has Long battery life to make sure it remains operational throughout the day</a></li><br>
 				<li><a>Constructed with water-resistant materials, our device is designed to withstand everyday activities and environments</a></li><br>
 			</ul>
 		</div>
 		<div>
-			<img src="../public/images/device.jpg">
+			<img src="../public/images/device.jpg" alt="Device Image">
 		</div>
-
 	</section>
 
 	<!-- Pricing Section -->
@@ -78,14 +79,14 @@
 		<div id="plan-wrapper">
 			<div>
 				<h4>Basic Plan</h4>
-				<img src="../public/images/device2.jpg">
+				<img src="../public/images/device2.jpg" alt="Basic Plan Image">
 				<h3>$200</h3>
 				<p>Data plan: Free</p>
 				<p>Premium features not included</p>
 			</div>
 			<div>
 				<h4>Premium Plan</h4>
-				<img src="../public/images/wrist_device.jpg">
+				<img src="../public/images/wrist_device.jpg" alt="Premium Plan Image">
 				<h3>$150</h3>
 				<p>Data plan: $20 per month</p>
 				<p>Premium features included</p>
@@ -93,7 +94,6 @@
 		</div>
 	</section>
 
-	<!-- Newsletter Section -->
 	<section class="newsletter">
 		<h2>Sign up for Newsletter</h2>
 		<form>
@@ -101,6 +101,8 @@
 			<button class="button" type="submit">Submit</button>
 		</form>
 	</section>
+
+	<footer>&copy; 2023 SecureBand. All rights reserved.</footer>
 
 	<script  src="./public/logout.js"></script>
 	<script  src="./public/session.js"></script>

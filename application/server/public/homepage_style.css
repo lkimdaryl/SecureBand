@@ -1,20 +1,4 @@
-:root {
-    --darkest-green: #1b4332;
-    --dark-green: #2d6a4f;
-    --green: #40916c;
-    --light-green: #95d5b2;
-    --lightest-green: #d8f3dc;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    overflow: auto;
-    width: 100%
-    background-color: white;
-    color: var(--darkest-green);
-  }
+@import "./shared_style.css";
 
 nav {
     display: flex;
@@ -24,16 +8,18 @@ nav {
     position: relative;
 }
 
-.logo {
-    height: 50px;
+nav div {
+    display: flex;
+    flex-wrap: no-wrap;
 }
 
-.logo img {
-    height: 100%;
+.logo {
+    padding: 0 20px;
 }
 
 nav ul {
     margin: 0;
+    padding: 0;
 }
 
 nav ul li {
@@ -52,9 +38,6 @@ nav ul li a {
     text-decoration: none;
 }
 
-#login {
-    margin-right: 25px;
-}
 
 section {
     padding: 100px 0;
@@ -66,7 +49,7 @@ section {
     height: 100vh;
 }
 
-#banner_img{
+#banner_img {
     position: absolute;
     top: 0;
     left: 0;
@@ -91,7 +74,7 @@ section {
     margin-left: 50px;
 }
 
-.about_us {
+#about_us {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -99,16 +82,16 @@ section {
     gap: 50px;
 }
 
-.about_us div{
+#about_us div{
     width: 40%;
-    min-width: 300px;
+    min-width: 250px;
 }
 
 #about_us_img{
     width: 100%;
 }
 
-.about_us a{
+#about_us a{
     text-decoration: none;
     color: var(--darkest-green);
 }
@@ -117,13 +100,14 @@ section {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 40px;
+    align-items: center;
+    gap: 50px;
     background: var(--lightest-green);
 }
 
 #feature div {
-    width: 40%;
-    min-width: 300px;
+    width: 45%;
+    min-width: 250px;
 }
 
 #feature ul {
@@ -136,7 +120,6 @@ section {
 #feature img{
     width: 100%;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    margin-top: 50px;
 }
 
 #pricing h2 {
@@ -152,7 +135,7 @@ section {
 }
 
 #plan-wrapper div{
-    min-width: 300px;
+    min-width: 250px;
     text-align: center;
     background: var(--light-green);
     border-radius: 40px;
@@ -179,16 +162,40 @@ section {
     background: var(--lightest-green);
 }
 
-@media screen and (max-width: 600px){
+footer {
+    background: var(--darkest-green);
+    color: var(--lightest-green);
+    height: 40px;
+    padding 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media screen and (max-width: 650px){
     #banner_text {
         font-size: 2rem;
+        margin-left: 20px;
+    }
+
+    #about_us div {
+        width: 90%;
     }
 
     #feature img{
         margin-top: 0;
     }
-}
 
+    #feature div {
+        width: 90%;
+    }
+}
+@media screen and (max-width: 300px){
+    #banner_text {
+        margin-left: 10px;
+        font-size: 1.5rem;
+    }
+}
 
 
 
