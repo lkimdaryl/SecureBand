@@ -1,6 +1,7 @@
+@import "./shared_style.css";
+
 body{
     background-color: white;
-
 }
 
 #about_us_section{
@@ -22,7 +23,7 @@ body{
     margin: 0 auto;
 }
 
-.content_container{
+.team_section{
     max-width: 75%;
     margin: 0 auto;
     text-align: center;
@@ -36,10 +37,9 @@ body{
 }
 
 #team {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto;
-    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
 }
 
 .member {
@@ -48,17 +48,33 @@ body{
     background-color: #D5F5E3;
     border-radius: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    width: 200px;
 }
 
-.member_pic{
-    width: 200px;
+.member img {
+    width: 100%;
     border-radius: 50%;
 }
 
-.member_name {
-
+#about_us {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
 }
 
-.member_description{
+#about_us div{
+    width: 40%;
+    min-width: 250px;
+}
 
+#about_us_img{
+    width: 100%;
+}
+
+@media screen and (max-width: 650px){
+    #about_us div {
+        width: 90%;
+    }
 }

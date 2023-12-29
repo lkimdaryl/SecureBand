@@ -1,26 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-<html>
 <head>
-    <title>About Us | SecureBand</title>
-    <link rel="stylesheet" href="../public/main.css">
-    <link rel="stylesheet" href="../public/about_us_style.css">
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Band | About Us</title>
+	<link rel="stylesheet" type="text/css" href="../public/about_us_style.css">
 </head>
 <body>
-	<!-- Navigation Bar -->
-	<nav class="nav_bar">
-		<ul class="nav-links">
-			<li><img class="logo" src="#"></li>
+	<nav>
+		<div role="navigation">
+			<img class="logo" src="../public/images/logo.svg" alt="SecureBand Logo">
+		<ul>
 			<li><a href="/" id="hometab">Home</a></li>
 			<li><a href="/about_us" id="abouttab">About Us</a></li>
 			<li><a href="/contact_us" id="contacttab">Contact Us</a></li>
-			<li><a href="/dashboard" id="dashtab" hidden>My Dashboard</a></li>
 		</ul>
-		<ul class="nav-links">
-            <li><a href="/settings" id="settings" hidden>Settings</a></li>
-			<li><a href="/register" id="signup" hidden>Sign Up</a></li>
-			<li><a href="/login" id="login" hidden>Login</a></li>
-            <li><a href="#" id="logout_button" hidden>Logout</a></li>
+		</div>
+		<ul>
+			<li><a href="/register" id="signup">Sign Up</a></li>
+			<li><a href="/login" id="login">Login</a></li>
 		</ul>
 	</nav>
 
@@ -48,41 +46,33 @@
         </p>
     </section>
 
-    <div class="content_container">
-        <!-- About Us Content -->
-        <section id="team_section">
-            <h1>Meet The Team</h1>
-            <div id="team">
-                <div class="member">
-                    <img src="../public/images/edward.jpg" class="member_pic">
-                    <h4 class="member_name">Edward Burns</h4>
-                    <p class="member_description">Firmware Developer</p>
-                </div>
-
-                <div class="member">
-                    <img src="../public/images/kim.jpg" class="member_pic">
-                    <h4 class="member_name">Kim Lim</h4>
-                    <p class="member_description">UI/UX Designer</p>
-                </div>
-
-                <div class="member">
-                    <img src="../public/images/ashlee.jpg" class="member_pic">
-                    <h4 class="member_name">Ashlee Young</h4>
-                    <p class="member_description">Data Analyst</p>
-                </div>
-
-                <div class="member">
-                    <img src="../public/images/josh.jpg" class="member_pic">
-                    <h4 class="member_name">Josh Lapidario</h4>
-                    <p class="member_description">Backend Developer</p>
-                </div>
+    <section class="team_section">
+        <h1>Meet The Team</h1>
+        <div id="team">
+            <div class="member">
+                <img src="../public/images/edward.jpg" class="member_pic">
+                <h4 class="member_name">Edward Burns</h4>
+                <p class="member_description">Firmware Developer</p>
             </div>
-        </section>
-    </div>
 
+            <div class="member">
+                <img src="../public/images/kim.jpg" class="member_pic">
+                <h4 class="member_name">Kim Lim</h4>
+                <p class="member_description">Frontend Developer</p>
+            </div>
 
-    <!-- Footer -->
-    <script  src="./public/logout.js"></script>
-    <script  src="./public/session.js"></script>
+            <div class="member">
+                <img src="../public/images/ashlee.jpg" class="member_pic">
+                <h4 class="member_name">Ashlee Young</h4>
+                <p class="member_description">Data Analyst</p>
+            </div>
+
+            <div class="member">
+                <img src="../public/images/josh.jpg" class="member_pic">
+                <h4 class="member_name">Josh Lapidario</h4>
+                <p class="member_description">Backend Developer</p>
+            </div>
+        </div>
+    </section>
 </body>
 </html>
