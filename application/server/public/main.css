@@ -127,7 +127,7 @@ input[type="submit"]:hover {
 }
 
 .contact_container {
-    margin: 0 auto;
+    margin: 40px auto;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;

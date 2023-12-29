@@ -5,7 +5,8 @@
     <title>Contact Us | SecureBand</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../public/main.css">
-    <link rel="stylesheet" href="../public/contact_style.css">
+    <script  src="./public/logout.js" defer></script>
+    <script  src="./public/session.js" defer></script>
 </head>
 <body>
 	<nav class="nav_bar">
@@ -24,39 +25,35 @@
 	</nav>
 
     <!-- Contact Us Content -->
-    <div class="wrapper">
-        <div class="contact_container">
-            <div>
-                <ul>
-                    <li class="sub_header">Address:</li>
-                    <li class="sub_header_content">555 something street</li>
-                    <li class="sub_header_content">San Diego, CA, 99999</li>
-                    <br>
-                    <li class="sub_header">Phone:</li>
-                    <li class="sub_header_content">555-555-5555</li>
-                    <br>
-                    <li class="sub_header">email:</li>
-                    <li class="sub_header_content">secureband@info.com</li>
-                </ul>
-            </div>
+    <div class="contact_container">
+        <div>
+            <ul>
+                <li class="sub_header">Address:</li>
+                <li class="sub_header_content">555 something street</li>
+                <li class="sub_header_content">San Diego, CA, 99999</li>
+                <br>
+                <li class="sub_header">Phone:</li>
+                <li class="sub_header_content">555-555-5555</li>
+                <br>
+                <li class="sub_header">email:</li>
+                <li class="sub_header_content">secureband@info.com</li>
+            </ul>
+        </div>
 
-            <div>
-                <form action="/send_message" method="POST">
-                    <fieldset>
-                        <legend><h2>Send Message</h2></legend>
-                        <input type="text" id="full_name" name="full_name" placeholder="Full Name"><br><br>
+        <div>
+            <form action="/send_message" method="POST">
+                <fieldset>
+                    <legend><h2>Send Message</h2></legend>
+                    <input type="text" id="full_name" name="full_name" placeholder="Full Name"><br><br>
 
-                        <input type="text" id="email" name="email" placeholder="Email"><br><br>
+                    <input type="text" id="email" name="email" placeholder="Email"><br><br>
 
-                        <textarea id="message" name="message" rows="8" cols="50" placeholder="Enter Message"></textarea><br><br>
+                    <textarea id="message" name="message" rows="8" cols="50" placeholder="Enter Message"></textarea><br><br>
 
-                        <input type="submit" value="Send">
-                    </fieldset>
-                </form>
-            </div>
+                    <input type="submit" value="Send">
+                </fieldset>
+            </form>
         </div>
     </div>
-    <script  src="./public/logout.js"></script>
-    <script  src="./public/session.js"></script>
 </body>
 </html>
