@@ -145,6 +145,7 @@ GET REQUESTS (AUTHENTICATION)
 #GET info if email exists in database
 @app.get("/nonexistent_email/{email}")
 def nonexistent_email(email:str):
+  print(email)
   return json.dumps(db.nonexistent_email(email))
 
 #GET info if username exists in database
