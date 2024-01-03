@@ -1,27 +1,26 @@
 @import "./shared_style.css";
 
+body {
+    text-align: center;
+}
 
 #kids {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto;
-    justify-items: center;
-    align-items: center;
-    padding: 50px;
-    border-top: solid gray;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
 }
 
 .kids_profile {
+    box-sizing: border-box;
+    width: 40%;
+    max-width: 300px;
+    min-width: 250px;
     background-color: #ABEBC6;
     padding: 20px;
     margin: 50px;
     border-radius: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     text-align: center;
-}
-
-.kids_profile:hover {
-    background-color: #58D68D;
 }
 
 .kids_profile button {
@@ -32,6 +31,7 @@
     color: white;
     border: none;
     border-radius: 20px;
+    margin: 5px;
 }
 
 .kids_profile button:hover {
@@ -55,6 +55,7 @@
     border: none;
     border-radius: 20px;
     margin-bottom: 80px;
+    text-align: center;
 }
 
 #add_member_bttn:hover {
@@ -75,15 +76,26 @@
 }
 
 #member_form {
+    display: flex;
+    flex-direction: column;
     background-color: white;
     padding: 20px;
     border-radius: 5px;
     position: relative;
+    width: 50%;
+    max-width: 400px;
+    min-width: 200px;
 }
 
-#member_form input[type="text"],
+#member_form input[type="text"] {
+    margin: 20px;
+}
+
 #member_form input[type="submit"] {
     margin: 20px;
+    width: 10%;
+    min-width: 100px;
+    max-width: 200px;
 }
 
 #close_button {

@@ -23,5 +23,16 @@ def nonexistent_email(email: str)->bool:
   db.close()
   return True
 
-value = nonexistent_email("asd@gmail.com")
-print(value)
+# value = nonexistent_email("asd@gmail.com")
+# print(value)
+
+def delete_child(child_id: int) -> bool:
+  db = mysql.connect(**db_config)
+  cursor = db.cursor()
+  query = (f"DELETE FROM children WHERE child_id = %s;")
+  cursor.execute(query, (child_id,))
+  db.commit()
+  db.close()
+  return True if cursor.rowcount == 1 else False
+
+delete_child(12)

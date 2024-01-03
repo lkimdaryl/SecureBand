@@ -284,6 +284,12 @@ async def edit_child(request: Request) -> dict:
     db.update_child(child_data['first_name'], child_data['last_name'], child_data['child_id'])
     return {'success': True}
 
+@app.post("/remove_child")
+async def remove_child(request: Request) -> dict:
+    child_data = await request.json()
+    result = db.delete_child(child_data['childID'])
+    return {'success': result} #returns true or false
+
 # Used to post the location of a child
 @app.post("/location")
 async def post_location(data: dict) -> dict:

@@ -1,14 +1,18 @@
-// variables
-const add_member = document.querySelector("#add_member_bttn");
 let map;
-var coordinates_interval;
-var posting_interval;
+let coordinates_interval;
+let posting_interval;
 let childId;
+const body = document.querySelector("body");
 
 document.addEventListener("DOMContentLoaded", function () {
+  //Load Google Maps JavaScript API
+  (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+  ({key: "AIzaSyA1ukCz1ALwO0QI0coVuQsIJTBi-rZWfnk", v: "weekly"});
+
   // display children of user (if any)
   display_children()
 
+  const add_member = document.querySelector("#add_member_bttn");
   add_member.addEventListener('click', function (event) {
     add_child();
   });
@@ -100,18 +104,16 @@ async function post_coordinates(url = '/location', verb = 'POST', data = {}, cal
 }
 
 // ----------------------------------------- HELPFUL FUNCTIONS -----------------------------------------
-const body = document.querySelector("body");
-
 function closeForm() {
-  var overlay = document.querySelector('#overlay');
+  let overlay = document.querySelector('#overlay');
   overlay.remove();
   body.style.overflow = 'auto'; // Restore scrolling
 }
 
 function getCookie(name) {
-  var cookieArr = document.cookie.split(";");
-  for (var i = 0; i < cookieArr.length; i++) {
-    var cookiePair = cookieArr[i].split("=");
+  let cookieArr = document.cookie.split(";");
+  for (let i = 0; i < cookieArr.length; i++) {
+    let cookiePair = cookieArr[i].split("=");
     if (name === cookiePair[0].trim()) {
       return decodeURIComponent(cookiePair[1]);
     }
@@ -120,30 +122,30 @@ function getCookie(name) {
 }
 // ----------------------------------------- ADDING CHILDREN -----------------------------------------
 function add_child() {
-  var overlay = document.createElement('div');
+  const overlay = document.createElement('div');
   overlay.id = 'overlay';
 
-  var form = document.createElement('form');
+  const form = document.createElement('form');
   form.id = 'member_form';
 
-  var firstNameInput = document.createElement('input');
+  const firstNameInput = document.createElement('input');
   firstNameInput.type = 'text';
   firstNameInput.placeholder = 'First Name';
   firstNameInput.name = 'first_name'
 
-  var lastNameInput = document.createElement('input');
+  const lastNameInput = document.createElement('input');
   lastNameInput.type = 'text';
   lastNameInput.placeholder = 'Last Name';
   lastNameInput.name = 'last_name'
 
-  var closeButton = document.createElement('button');
+  const closeButton = document.createElement('button');
   closeButton.id = 'close_button'
   closeButton.textContent = 'X';
   closeButton.addEventListener('click', function () {
     closeForm();
   });
 
-  var submitButton = document.createElement('input');
+  const submitButton = document.createElement('input');
   submitButton.type = 'submit';
   submitButton.value = 'Submit';
 
@@ -154,56 +156,56 @@ function add_child() {
 
   overlay.appendChild(form);
   body.appendChild(overlay);
-
-  // Prevent scrolling when the form is open
   body.style.overflow = 'hidden';
 
-  // Handle form submission
   form.addEventListener('submit', function (event) {
     event.preventDefault();
-    // Add your code here to handle form submission
-    var firstName = firstNameInput.value;
-    var lastName = lastNameInput.value;
-    var parentId = getCookie("user_id");
+    let firstName = firstNameInput.value;
+    let lastName = lastNameInput.value;
+    let parentId = getCookie("user_id");
 
-    // Create the child profile div
     const child_div = document.createElement("div");
     child_div.classList.add("kids_profile");
 
-    // Create the child image element
     const image = document.createElement("img");
     image.classList.add('profile_pic');
     image.src = "../public/images/blank_profile.png";
 
-    // Create the child name paragraph
     const name = document.createElement("p");
     name.textContent = firstName + ' ' + lastName;
 
-    // Create the rescue mode button
     const rescue_button = document.createElement("button");
     rescue_button.textContent = "Rescue Mode";
     rescue_button.classList.add('rescue_mode_bttn')
 
-    // Append the image and paragraph elements to the new kids_profile div
+    const update_button = document.createElement("button");
+    update_button.textContent = "Update Info";
+
+    const remove_button = document.createElement("button");
+    remove_button.textContent = "Remove Child";
+
     child_div.appendChild(image);
     child_div.appendChild(name);
     child_div.appendChild(rescue_button);
+    child_div.appendChild(update_button);
+    child_div.appendChild(remove_button);
 
-    // Append the child profile to the parent section
     const kids_section = document.getElementById("kids");
     kids_section.appendChild(child_div);
 
-    // Add event listener to the new kids_profile div for editing
-    image.addEventListener("click", function () {
+    update_button.addEventListener("click", function () {
       edit_profile(child_div);
     });
 
-    // Add event listener to the rescue mode button
+    remove_button.addEventListener("click", function () {
+        kids_section.removeChild(child_div);
+    });
+
     rescue_button.addEventListener("click", function () {
       // console.log("rescue button clicked")
 
       rescue_button.classList.toggle('clicked');
-      var isClicked = rescue_button.classList.contains('clicked');
+      let isClicked = rescue_button.classList.contains('clicked');
 
       if (isClicked) {
         rescue_button.style.backgroundColor = 'red'
@@ -226,35 +228,33 @@ function add_child() {
         location.reload();
       });
     closeForm();
-
   });
-
 }
 
 // ----------------------------------------- EDITING CHILDREN -----------------------------------------
 function edit_profile(profile) {
-  var overlay = document.createElement('div');
+  let overlay = document.createElement('div');
   overlay.id = 'overlay';
 
-  var form = document.createElement('form');
+  let form = document.createElement('form');
   form.id = 'member_form';
 
-  var firstNameInput = document.createElement('input');
+  let firstNameInput = document.createElement('input');
   firstNameInput.type = 'text';
   firstNameInput.placeholder = 'First Name';
 
-  var lastNameInput = document.createElement('input');
+  let lastNameInput = document.createElement('input');
   lastNameInput.type = 'text';
   lastNameInput.placeholder = 'Last Name';
 
-  var closeButton = document.createElement('button');
+  let closeButton = document.createElement('button');
   closeButton.id = 'close_button'
   closeButton.textContent = 'X';
   closeButton.addEventListener('click', function () {
     closeForm();
   });
 
-  var submitButton = document.createElement('input');
+  let submitButton = document.createElement('input');
   submitButton.type = 'submit';
   submitButton.value = 'Submit';
 
@@ -273,14 +273,14 @@ function edit_profile(profile) {
   form.addEventListener('submit', function (event) {
     event.preventDefault();
 
-    var firstName = firstNameInput.value;
-    var lastName = lastNameInput.value;
+    let firstName = firstNameInput.value;
+    let lastName = lastNameInput.value;
 
-    var this_kid = document.querySelector('.kids_profile p');
+    let this_kid = document.querySelector('.kids_profile p');
     this_kid.innerHTML = firstName + ' ' + lastName;
 
     // Send updated data to the server
-    var childData = {
+    let childData = {
       first_name: firstName,
       last_name: lastName,
       child_id: childId
@@ -348,7 +348,7 @@ async function display_children(url = "/display", verb = "GET", callback) {
           console.log(`button: ${button_id}`);
 
           rescue_button.classList.toggle('clicked');
-          var isClicked = rescue_button.classList.contains('clicked');
+          let isClicked = rescue_button.classList.contains('clicked');
 
           if (isClicked) {
             rescue_button.style.backgroundColor = 'red'

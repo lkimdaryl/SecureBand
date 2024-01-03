@@ -187,7 +187,17 @@ def update_child(first_name: str, last_name: str, child_id: int) -> bool:
 def delete_user(user_id:int) -> bool:
   db = mysql.connect(**db_config)
   cursor = db.cursor()
-  cursor.execute(f"delete from users where id={user_id};")
+  query = (f"delete from users where id=%s;")
+  cursor.execute(query, (user_id,))
+  db.commit()
+  db.close()
+  return True if cursor.rowcount == 1 else False
+
+def delete_child(child_id: int) -> bool:
+  db = mysql.connect(**db_config)
+  cursor = db.cursor()
+  query = (f"DELETE FROM children WHERE child_id = %s;")
+  cursor.execute(query, (child_id,))
   db.commit()
   db.close()
   return True if cursor.rowcount == 1 else False
