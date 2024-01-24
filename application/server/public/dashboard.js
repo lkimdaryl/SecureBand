@@ -5,17 +5,40 @@ let childId;
 const body = document.querySelector("body");
 
 document.addEventListener("DOMContentLoaded", function () {
-  //Load Google Maps JavaScript API
-  (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
-  ({key: "AIzaSyA1ukCz1ALwO0QI0coVuQsIJTBi-rZWfnk", v: "weekly"});
+    //Load Google Maps JavaScript API
+    (g => {
+      var h, a, k, p = "The Google Maps JavaScript API",
+        c = "google",
+        l = "importLibrary",
+        q = "__ib__",
+        m = document,
+        b = window;
+      b = b[c] || (b[c] = {});
+      var d = b.maps || (b.maps = {}),
+        r = new Set,
+        e = new URLSearchParams,
+        u = () => h || (h = new Promise(async (f, n) => {
+          await (a = m.createElement("script"));
+          e.set("libraries", [...r] + "");
+          for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]);
+          e.set("callback", c + ".maps." + q);
+          a.src = `https://maps.${c}apis.com/maps/api/js?` + e;
+          d[q] = f;
+          a.onerror = () => h = n(Error(p + " could not load."));
+          a.nonce = m.querySelector("script[nonce]")?.nonce || "";
+          m.head.append(a);
+        }));
+      d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n));
+    });
+    ({key: "AIzaSyDeOH7JuAUe3glWpRSgtTDUpj0Xye069Qo", v: "weekly"});
 
-  // display children of user (if any)
-  display_children();
+    // display children of user (if any)
+    display_children();
 
-  const add_member = document.querySelector("#add_member_bttn");
-  add_member.addEventListener('click', function (event) {
+    const add_member = document.querySelector("#add_member_bttn");
+    add_member.addEventListener('click', function (event) {
     add_child();
-  });
+    });
 });
 
 // ----------------------------------------- DISPLAYING MAP -----------------------------------------
@@ -54,9 +77,6 @@ async function fetch_coordinates() {
 
     const { latitude, longitude } = await response.json();
 
-//    console.log("Latitude:", latitude);
-//    console.log("Longitude:", longitude);
-
     // call to display the coordinates on the map
     initMap(latitude, longitude);
 
@@ -75,9 +95,6 @@ async function rescue_coordinates() {
 
     const { latitude, longitude } = await response.json();
 
-    console.log("Latitude:", latitude);
-    console.log("Longitude:", longitude);
-
     // call to display the coordinates on the map
     initMap(latitude, longitude);
 
@@ -85,7 +102,6 @@ async function rescue_coordinates() {
     console.error('Error:', error);
   }
 }
-
 // ----------------------------------------- POSTING COORDINATES OF CHILD -----------------------------------------
 async function post_coordinates(url = '/location', verb = 'POST', data = {}, callback) {
   return fetch(url, {
@@ -96,20 +112,17 @@ async function post_coordinates(url = '/location', verb = 'POST', data = {}, cal
   })
     .then(response => response.json())
     .then(response => {
-//      console.log("response:", response);
       if (callback)
         callback(response);
     })
     .catch(error => console.error('Error:', error));
 }
-
 // ----------------------------------------- HELPFUL FUNCTIONS -----------------------------------------
 function closeForm() {
   let overlay = document.querySelector('#overlay');
   overlay.remove();
   body.style.overflow = 'auto'; // Restore scrolling
 }
-
 function getCookie(name) {
   let cookieArr = document.cookie.split(";");
   for (let i = 0; i < cookieArr.length; i++) {
@@ -174,13 +187,11 @@ function create_child_elements(firstName, lastName, childID){
     });
 
     rescue_button.addEventListener("click", function () {
-        // console.log("rescue button clicked")
         rescue_button.classList.toggle('clicked');
         let isClicked = rescue_button.classList.contains('clicked');
 
         if (isClicked) {
             rescue_button.style.backgroundColor = 'red';
-            console.log("rescue mode");
         } else {
             rescue_button.style.backgroundColor = 'green';
         }
@@ -258,10 +269,6 @@ function create_child_form(){
 function add_child() {
     const form_dict = create_child_form();
     const form = form_dict.form;
-    console.log(form_dict);
-//    console.log(form);
-//    console.log(form_dict.firstNameValue);
-//    console.log(form_dict.lastNameValue);
     form.addEventListener('submit', function (event) {
         event.preventDefault();
         let firstName = form_dict.firstNameInput.value;
@@ -278,14 +285,12 @@ function add_child() {
         .then(response => response.json())
         .then(response => {
             childId = response.child_id;
-            console.log(childId);
             create_child_elements(firstName, lastName, childId);
             location.reload();
         });
         closeForm();
     });
 }
-
 // ----------------------------------------- EDITING CHILDREN -----------------------------------------
 function edit_profile(profile, childID) {
     const form_dict = create_child_form();
@@ -332,13 +337,10 @@ async function display_children(url = "/display", verb = "GET", callback) {
     })
     .then((response) => response.json())
     .then((data) => {
-//        console.log("children: ", data);
         for (let id in data) {
             const child = data[id];
-            //console.log(child);
             create_child_elements(child.first_name, child.last_name, child.child_id);
 
-            // fetching and posting coordinates
             fetch_coordinates();
             post_coordinates('/location', 'POST', { child_id: child.child_id });
 

@@ -5,12 +5,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | SecureBand</title>
 	<script src="../public/dashboard.js" defer></script>
+	<script src="../public/map.js" defer></script>
 	<script src="../public/logout.js"  defer></script>
     <script src="../public/session.js" defer></script>
 	<link rel="stylesheet" type="text/css" href="../public/dashboard_style.css">
 </head>
 <body>
-	<!-- Navigation Bar -->
 	<nav class="nav_bar">
 		<div role="navigation">
 			<img class="logo" src="../public/images/logo.svg" alt="SecureBand Logo">
@@ -27,15 +27,15 @@
 
 	<h1 id="title">Dashboard</h1>
 
-	<!--kids profiles sections-->
 	<section id="kids"></section>
 
 	<button id="add_member_bttn">Add Member</button>
 
-
     <div class="container">
         <h1>Location On Map</h1>
         <div id="map"></div>
+		<map-widget></map-widget>
+		<p>This is just an example map since no gps device is currently available</p>
     </div>
 </body>
 </html>

@@ -114,3 +114,7 @@ body {
   width: 200px;
 }
 
+map-widget {
+    display: flex;
+    justify-content: center;
+}
